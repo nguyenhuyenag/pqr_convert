@@ -34,7 +34,7 @@ def generate_terms(vars):
 
 # Tạo cửa sổ
 root = tk.Tk()
-root.title("Đa Thức Generator")
+root.title("PQR Convert")
 root.geometry("800x600")
 
 # Main container (chia làm 2 phần: trái + phải)
@@ -46,14 +46,15 @@ left_frame = ttk.Frame(main_frame)
 left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
 # Ô nhập bậc
-ttk.Label(left_frame, text="Nhập bậc tối đa:").pack(anchor=tk.W)
-input_deg = scrolledtext.ScrolledText(left_frame, height=1, wrap=tk.WORD)
+h = 8
+ttk.Label(left_frame, text="Input:").pack(anchor=tk.W)
+input_deg = scrolledtext.ScrolledText(left_frame, height=h, wrap=tk.WORD)
 input_deg.pack(fill=tk.X, pady=5)
-input_deg.insert(tk.END, "2")
+input_deg.insert(tk.END, "2")  # default value
 
 # Ô kết quả
-ttk.Label(left_frame, text="Kết quả:").pack(anchor=tk.W)
-output_text = scrolledtext.ScrolledText(left_frame, height=15, wrap=tk.WORD)
+ttk.Label(left_frame, text="Output:").pack(anchor=tk.W)
+output_text = scrolledtext.ScrolledText(left_frame, height=15 - h, wrap=tk.WORD)
 output_text.pack(fill=tk.BOTH, expand=True)
 
 # Đường kẻ DỌC phân cách
@@ -65,16 +66,13 @@ right_frame = ttk.Frame(main_frame, width=100)
 right_frame.pack(side=tk.LEFT, fill=tk.Y)
 
 # Các nút xếp DỌC từ trên xuống
-btn_pqr = ttk.Button(right_frame, text="pqr", width=10,
-                     command=lambda: generate_terms("p q r"))
+btn_pqr = ttk.Button(right_frame, text="pqr", width=10, command=lambda: generate_terms("p q r"))
 btn_pqr.pack(pady=10)
 
-btn_uvw = ttk.Button(right_frame, text="uvw", width=10,
-                     command=lambda: generate_terms("u v w"))
+btn_uvw = ttk.Button(right_frame, text="uvw", width=10, command=lambda: generate_terms("u v w"))
 btn_uvw.pack(pady=10)
 
-btn_pRr = ttk.Button(right_frame, text="pRr", width=10,
-                     command=lambda: generate_terms("p R r"))
-btn_pRr.pack(pady=10)
+# btn_pRr = ttk.Button(right_frame, text="pRr", width=10, command=lambda: generate_terms("p R r"))
+# btn_pRr.pack(pady=10)
 
 root.mainloop()
