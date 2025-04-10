@@ -132,4 +132,5 @@ for text, cmd in buttons:
     )
     btn.pack(pady=8, ipady=5)
 
-root.mainloop()
+if __name__ == "__main__":
+    root.mainloop()
