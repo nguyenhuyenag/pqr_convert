@@ -3,6 +3,7 @@ from tkinter import ttk, scrolledtext, messagebox
 
 import sympy as sp
 
+from gui.tooltip import ToolTip
 from pqr.pqr_tools import pqr
 
 
@@ -54,41 +55,13 @@ def uvw_convert():
 
 
 #####################################################
-
-
-class ToolTip:
-    def __init__(self, widget, text):
-        self.widget = widget
-        self.text = text
-        self.tip_window = None
-        self.widget.bind("<Enter>", self.show_tip)
-        self.widget.bind("<Leave>", self.hide_tip)
-
-    def show_tip(self, event=None):
-        x, y, _, _ = self.widget.bbox("insert")
-        x += self.widget.winfo_rootx() + 25
-        y += self.widget.winfo_rooty() + 25
-
-        self.tip_window = tk.Toplevel(self.widget)
-        self.tip_window.wm_overrideredirect(True)
-        self.tip_window.wm_geometry(f"+{x}+{y}")
-
-        label = tk.Label(self.tip_window, text=self.text, justify=tk.LEFT,
-                         background="#ffffe0", relief=tk.SOLID, borderwidth=1,
-                         font=('Arial', 10))
-        label.pack()
-
-    def hide_tip(self, event=None):
-        if self.tip_window:
-            self.tip_window.destroy()
-        self.tip_window = None
-
-
-###############################################
 # Tạo cửa sổ chính
 root = tk.Tk()
 root.title("PQR Convert")
 root.geometry("900x600")
+
+# Định nghĩa font với kích thước lớn hơn (vd: 12)
+custom_font = ('Consolas', 11)
 
 # Main container
 main_frame = ttk.Frame(root)
@@ -113,20 +86,20 @@ tooltip_label.pack(side=tk.LEFT, padx=(5, 0))
 ToolTip(tooltip_label,
         text="If there are multiple variables, enter the base variables separated by commas.\nFor example: a,b,c")
 
-# Dòng 2: Ô nhập
-var_entry = ttk.Entry(variables_frame)
+# Dòng 2: Ô nhập - Thêm font size
+var_entry = ttk.Entry(variables_frame, font=custom_font)
 var_entry.pack(fill=tk.X)
 var_entry.insert(0, 'a,b,c')
 
-# Ô nhập đa thức
+# Ô nhập đa thức - Thêm font size
 ttk.Label(left_frame, text="Input:").pack(anchor=tk.W)
-input_poly = scrolledtext.ScrolledText(left_frame, height=12, wrap=tk.WORD)
+input_poly = scrolledtext.ScrolledText(left_frame, height=12, wrap=tk.WORD, font=custom_font)
 input_poly.pack(fill=tk.BOTH, expand=True, pady=5)
 input_poly.insert(tk.END, 'a^5 + b^5 + c^5 + k*(a^4*b + b^4*c + c^4*a)')
 
-# Ô kết quả
+# Ô kết quả - Thêm font size
 ttk.Label(left_frame, text="Output:").pack(anchor=tk.W)
-output_text = scrolledtext.ScrolledText(left_frame, height=8, wrap=tk.WORD)
+output_text = scrolledtext.ScrolledText(left_frame, height=8, wrap=tk.WORD, font=custom_font)
 output_text.pack(fill=tk.BOTH, expand=True)
 
 # Đường kẻ dọc phân cách
