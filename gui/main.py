@@ -11,6 +11,24 @@ def get_input():
     return sp.simplify(input_poly.get(1.0, tk.END).strip())
 
 
+def get_variables():
+    """Lấy giá trị từ ô variables và trả về danh sách các biến đã được chuẩn hóa"""
+    # Lấy nội dung từ ô nhập
+    var_text = var_entry.get().strip()
+
+    # Nếu ô trống, trả về danh sách mặc định
+    if not var_text:
+        return ['a', 'b', 'c']
+
+    # Tách các biến bằng dấu phẩy và loại bỏ khoảng trắng thừa
+    variables = [v.strip() for v in var_text.split(',')]
+
+    # Lọc bỏ các biến rỗng (nếu có)
+    variables = [v for v in variables if v]
+
+    return variables
+
+
 # Hàm chèn kết quả vào ô Output
 def output(poly):
     output_text.delete(1.0, tk.END)  # Xóa nội dung cũ
@@ -20,8 +38,8 @@ def output(poly):
 def pqr_convert():
     try:
         poly = get_input()
-        # TODO: xử lý đa thức ở đây nếu cần
-        output(pqr(poly))
+        pvars = get_variables()
+        output(pqr(poly, pvars))
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
@@ -34,9 +52,8 @@ def uvw_convert():
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
+
 #####################################################
-import tkinter as tk
-from tkinter import ttk, scrolledtext
 
 
 class ToolTip:
@@ -67,10 +84,11 @@ class ToolTip:
         self.tip_window = None
 
 
+###############################################
 # Tạo cửa sổ chính
 root = tk.Tk()
 root.title("PQR Convert")
-root.geometry("800x600")
+root.geometry("900x600")
 
 # Main container
 main_frame = ttk.Frame(root)
@@ -92,7 +110,8 @@ ttk.Label(var_label_frame, text="Variables:").pack(side=tk.LEFT)
 # Tooltip
 tooltip_label = ttk.Label(var_label_frame, text="(?)", foreground="blue")
 tooltip_label.pack(side=tk.LEFT, padx=(5, 0))
-ToolTip(tooltip_label, text="Nhập các biến, cách nhau bằng dấu phẩy\nVí dụ: a,b,c,x,y,z")
+ToolTip(tooltip_label,
+        text="If there are multiple variables, enter the base variables separated by commas.\nFor example: a,b,c")
 
 # Dòng 2: Ô nhập
 var_entry = ttk.Entry(variables_frame)
@@ -100,13 +119,13 @@ var_entry.pack(fill=tk.X)
 var_entry.insert(0, 'a,b,c')
 
 # Ô nhập đa thức
-ttk.Label(left_frame, text="Biểu thức đa thức:").pack(anchor=tk.W)
+ttk.Label(left_frame, text="Input:").pack(anchor=tk.W)
 input_poly = scrolledtext.ScrolledText(left_frame, height=12, wrap=tk.WORD)
 input_poly.pack(fill=tk.BOTH, expand=True, pady=5)
 input_poly.insert(tk.END, 'a^5 + b^5 + c^5 + k*(a^4*b + b^4*c + c^4*a)')
 
 # Ô kết quả
-ttk.Label(left_frame, text="Kết quả:").pack(anchor=tk.W)
+ttk.Label(left_frame, text="Output:").pack(anchor=tk.W)
 output_text = scrolledtext.ScrolledText(left_frame, height=8, wrap=tk.WORD)
 output_text.pack(fill=tk.BOTH, expand=True)
 
@@ -125,7 +144,7 @@ def dummy_command():
 
 
 buttons = [
-    ("PQR", dummy_command),
+    ("PQR", pqr_convert),
     ("UVW", dummy_command),
     ("Simplify", dummy_command),
     ("Clear", dummy_command)
@@ -136,4 +155,3 @@ for text, cmd in buttons:
     btn.pack(pady=8, ipady=5)
 
 root.mainloop()
-
