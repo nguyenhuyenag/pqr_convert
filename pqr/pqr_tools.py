@@ -1,12 +1,10 @@
 from itertools import combinations_with_replacement
 from typing import List
 
-from sympy import Mul, Symbol, Expr
-from sympy import Poly, S, symbols as sp_symbols
+import sympy as sp
+from sympy import Mul, Symbol, Expr, UnevaluatedExpr, Poly
+from sympy import S, symbols as sp_symbols
 
-
-# from sympy.abc import a, b, c, p, q, r
-# a, b, c, p, q, r = sp_symbols('a b c p q r')
 
 def sort_alphabet(arr):
     return sorted(arr, key=str)
@@ -31,13 +29,18 @@ def poly_zero(poly: Poly):
     coeffs = poly.as_dict().values()
     eqs = {coeff for coeff in coeffs}
 
-    eqs_vars = poly.free_symbols - set(poly.gens)
-    eqs_vars = sort_alphabet(eqs_vars)
+    # eqs_vars = poly.free_symbols - set(poly.gens)
+    # eqs_vars = sort_alphabet(eqs_vars)
+    # return eqs, eqs_vars
+    return eqs
 
-    return eqs, eqs_vars
 
+def degree_of_pqr(item):
+    a, b, c, p, q, r = sp_symbols("a b c p q r")
+    subs_list = {p: a + b + c, q: a * b + b * c + c * a, r: a * b * c}
+    f_abc = Poly(item, p, q, r).as_expr().xreplace(subs_list).expand()
+    return Poly(f_abc, a, b, c).total_degree()
 
-# inext = 1
 
 # Sinh ra đa thức pqr và biến số [m1,m2,...]
 # [p = a + b + c, q = a*b + b*c + c*a, r = a*b*c]
@@ -48,33 +51,68 @@ def generate_pqr(degree: int, coeff_name: str = 'm'):
     if 'inext' not in globals():
         inext = 1
 
-    poly = S.Zero
+    poly = S.Zero  # This is an Expr (not Poly)
     coeffs = []
-    symbols = ['p', 'q', 'r']
 
-    a, b, c, p, q, r = sp_symbols("a b c p q r")
-    subs_list = {p: a + b + c, q: a * b + b * c + c * a, r: a * b * c}
-
-    monomial_list = monomials(symbols, degree)
+    monomial_list = monomials(['p', 'q', 'r'], degree)
     for item in monomial_list:
-        # Convert to Expr, substitute, expand, then back to Poly
-        expr_abc = Poly(item, p, q, r).as_expr().subs(subs_list).expand()
-        degree_abc = Poly(expr_abc, a, b, c).total_degree()
-
-        if degree_abc <= degree:
+        if degree_of_pqr(item) <= degree:
             coeff = Symbol(f'{coeff_name}{inext}')
             poly += coeff * item
             coeffs.append(coeff)
             inext += 1
 
-    return Poly(poly, sp_symbols(symbols)), coeffs
+    return sp.simplify(poly), coeffs  # Returns Expr (not Poly)
 
 
-def create_pqr(degree: int):
-    pass
+def create_pqr(symbols: List[Symbol], degree: int):
+    if degree < 3:
+        return generate_pqr(degree)
+
+    coeff_name = 'm'
+    a, b, c = symbols
+
+    f1, c1 = generate_pqr(degree, coeff_name=coeff_name)
+    f2, c2 = generate_pqr(degree - 3, coeff_name=coeff_name)
+    f_cyc = UnevaluatedExpr((a - b) * (b - c) * (c - a))
+    poly = f1 + f2 * f_cyc
+
+    return poly, c1 + c2
+
+
+def pqr(expr: str, symbols: List[str] = []):
+    expr = sp.simplify(expr)
+    poly = Poly(expr)
+
+    if not symbols:
+        symbols = poly.gens
+    else:
+        symbols = sp_symbols(symbols)
+        poly = Poly(expr, symbols)
+
+    deg = poly.total_degree()
+    pqr_template, coeffs = create_pqr(symbols=symbols, degree=deg)
+
+    a, b, c = symbols
+    p, q, r = sp_symbols(['p', 'q', 'r'])
+
+    subs_list = {p: a + b + c, q: a * b + b * c + c * a, r: a * b * c}
+    F = pqr_template.xreplace(subs_list).expand()
+
+    F = Poly(str(F), symbols)
+    eqs = poly_zero(F - poly)
+    eqs = sp.solve(eqs, coeffs)
+    if eqs:
+        print(eqs)
+        subs = pqr_template.xreplace(eqs)
+        print(subs)
+        return subs
+    else:
+        print('Not found')
+    return []
 
 
 ##########################################################
-g_pqr = generate_pqr(degree=3, coeff_name='m')
-print(g_pqr[0].as_expr())
-# print(g_pqr[1])
+# f = 'a^3+b^3+c^3'
+f = 'a^3*b+b^3*c+c^3*a'
+pqr(f)
