@@ -15,7 +15,7 @@ def output(poly):
     output_text.insert(tk.END, str(poly))  # Chèn kết quả mới
 
 
-def pqr():
+def pqr_convert():
     try:
         poly = get_input()
         # TODO: xử lý đa thức ở đây nếu cần
@@ -25,7 +25,7 @@ def pqr():
         messagebox.showerror("Error", str(e))
 
 
-def uvw():
+def uvw_convert():
     try:
         poly = get_input()
         result = f"{poly}"
@@ -48,7 +48,7 @@ left_frame = ttk.Frame(main_frame)
 left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
 # Ô nhập bậc
-h = 8
+h = 12
 ttk.Label(left_frame, text="Input:").pack(anchor=tk.W)
 input_poly = scrolledtext.ScrolledText(left_frame, height=h, wrap=tk.WORD)
 input_poly.pack(fill=tk.X, pady=5)
@@ -68,10 +68,10 @@ right_frame = ttk.Frame(main_frame, width=100)
 right_frame.pack(side=tk.LEFT, fill=tk.Y)
 
 # Các nút xếp DỌC từ trên xuống
-btn_pqr = ttk.Button(right_frame, text="pqr", width=10, command=pqr)
+btn_pqr = ttk.Button(right_frame, text="pqr", width=10, command=pqr_convert)
 btn_pqr.pack(pady=10)
 
-btn_uvw = ttk.Button(right_frame, text="uvw", width=10, command=uvw)
+btn_uvw = ttk.Button(right_frame, text="uvw", width=10, command=uvw_convert)
 btn_uvw.pack(pady=10)
 
 root.mainloop()

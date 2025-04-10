@@ -1,93 +1,83 @@
-from sympy import solve, Eq, Symbol, expand
-from sympy import symbols, Poly, S
-from sympy.abc import a, b, c, p, q, r
+from itertools import combinations_with_replacement
+from typing import List
 
-inext = 1
-gvar = '_m_'
-
-
-# generateAllTerms(['p', 'q', 'r'], 2) = [q*r, r, 1, r**2, q, p**2, q**2, p*q, p, p*r]
-def generate_all_terms(variables, degree: int):
-    variables = symbols(variables)
-    poly_expr = (1 + sum(variables)) ** degree  # (a + b + c + ... + 1)^deg
-    expanded = expand(poly_expr)
-
-    terms = set()
-    for term in expanded.as_ordered_terms():
-        term_without_coeff = term.as_independent(*variables, as_Add=False)[1]
-        terms.add(term_without_coeff)
-
-    return list(terms)
+from sympy import Mul, Symbol, Expr
+from sympy import Poly, S, symbols as sp_symbols
 
 
-def create_pqr(deg: int, cvar: str = '') -> Poly:
-    global inext  # Init inext where?
+# from sympy.abc import a, b, c, p, q, r
+# a, b, c, p, q, r = sp_symbols('a b c p q r')
 
-    if not cvar:
-        cvar = gvar
-
-    _a, _b, _c, p, q, r = symbols('_a _b _c p q r')
-    poly = S.Zero  # Khởi tạo kết quả bằng 0
-
-    for term in generate_all_terms(['p', 'q', 'r'], deg):
-        F = Poly(f'{cvar}{inext}') * term
-        poly += F
-        inext += 1
-
-    return Poly(poly, p, q, r)
+def sort_alphabet(arr):
+    return sorted(arr, key=str)
 
 
+# Viết doc Todo
+# monomials(['p', 'q', 'r'], 2) -> [1, p, r**2, q*r, q, p**2, p*r, p*q, q**2, r]
+def monomials(symbols: List[str], max_degree: int) -> List[Expr]:
+    monomial_list = {S.One}
+    symbols = sp_symbols(symbols)
+
+    for deg in range(1, 1 + max_degree):
+        for comb in combinations_with_replacement(symbols, deg):
+            term = Mul(*comb)
+            monomial_list.add(term)
+
+    return list(monomial_list)
+
+
+# def poly_zero(poly: Poly, symbols: List[str] = []):
 def poly_zero(poly: Poly):
-    eqs = set()
-    eqs_vars = set()
+    coeffs = poly.as_dict().values()
+    eqs = {coeff for coeff in coeffs}
 
-    for coeff in poly.as_dict().values():
-        eqs.add(Eq(coeff, 0))
-        if isinstance(coeff, Symbol):
-            eqs_vars.add(coeff)
-        else:
-            eqs_vars.update(coeff.free_symbols)
+    eqs_vars = poly.free_symbols - set(poly.gens)
+    eqs_vars = sort_alphabet(eqs_vars)
 
-    return eqs, sorted(eqs_vars, key=str)
+    return eqs, eqs_vars
 
 
-#############################################
-# print(getAllTerms(['p', 'q', 'r'], 3))
+# inext = 1
+
+# Sinh ra đa thức pqr và biến số [m1,m2,...]
+# [p = a + b + c, q = a*b + b*c + c*a, r = a*b*c]
+def generate_pqr(degree: int, coeff_name: str = 'm'):
+    global inext
+
+    # Initialize inext if not exists
+    if 'inext' not in globals():
+        inext = 1
+
+    poly = S.Zero
+    coeffs = []
+    symbols = ['p', 'q', 'r']
+
+    a, b, c, p, q, r = sp_symbols("a b c p q r")
+    L = {p: a + b + c, q: a * b + b * c + c * a, r: a * b * c}
+    monomial_list = monomials(symbols, degree)
+
+    for item in monomial_list:
+        # Convert to Expr, substitute, expand, then back to Poly
+        substituted_expr = Poly(item, p, q, r).as_expr().subs(L)
+        expanded_expr = substituted_expr.expand()
+
+        # Now compute degree in a, b, c
+        degree_abc = Poly(expanded_expr, a, b, c).total_degree()
+
+        if degree_abc <= degree:
+            coeff = Symbol(f'{coeff_name}{inext}')
+            poly += coeff * item
+            coeffs.append(coeff)
+            inext += 1
+
+    return Poly(poly, sp_symbols(symbols)), coeffs
 
 
-def pqr(expr):
-    # expr = 'a**2+b**2+c**2+k*(a*b+b*c+c*a)'
-    f = Poly(expr)
-    deg = f.total_degree()
-    # F = '_m1*p**2 + _m2*q'
-    F1 = create_pqr(deg)
-    print(F1.domain)
-    F = F1 + create_pqr(deg, inext=len(F1.domain) + 1)
-
-    # Substitute symmetric polynomial definitions
-    F_subs = Poly(F.as_expr(), a, b, c, p, q, r).subs({
-        p: a + b + c,
-        q: a * b + b * c + c * a,
-        r: a * b * c
-    })
-    diff = Poly(f, a, b, c) - Poly(F_subs.__str__(), a, b, c)
-    eq, eq_vars = poly_zero(diff)
-    eq_vars = [_ for _ in eq_vars if str(_).startswith(gvar)]
-    root = solve(eq, eq_vars)
-    if root:
-        # print(root)
-        out = Poly(F, *eq_vars).subs(root)
-        print(out.as_expr())
-    else:
-        print('Not found')
+def create_pqr(degree: int):
+    pass
 
 
-# =================
-# _test()
-# F = createPqr(deg=2, var='m')
-# print(F.as_expr())
-f = 'a**2+b**2+c**2+k*(a*b+b*c+c*a)'
-# pqr(f)
-
-# print(generateAllTerms(['p', 'q', 'r'], 2))
-print(create_pqr(deg=2, cvar='m').as_expr())
+##########################################################
+g_pqr = generate_pqr(degree=1, coeff_name='t')
+print(g_pqr[0].as_expr())
+print(g_pqr[1])
