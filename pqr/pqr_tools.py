@@ -109,6 +109,4 @@ def pqr(expr: str, symbols: List[str] = []):
         subs = pqr_template.xreplace(eqs)
         return subs
     else:
-        print('Not found')
-
-    return []
+        return "Unable to convert. Please check the input expression."

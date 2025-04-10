@@ -93,9 +93,9 @@ var_entry.insert(0, 'a,b,c')
 
 # Ô nhập đa thức - Thêm font size
 ttk.Label(left_frame, text="Input:").pack(anchor=tk.W)
-input_poly = scrolledtext.ScrolledText(left_frame, height=12, wrap=tk.WORD, font=custom_font)
+input_poly = scrolledtext.ScrolledText(left_frame, height=8, wrap=tk.WORD, font=custom_font)
 input_poly.pack(fill=tk.BOTH, expand=True, pady=5)
-input_poly.insert(tk.END, 'a^5 + b^5 + c^5 + k*(a^4*b + b^4*c + c^4*a)')
+input_poly.insert(tk.END, '(a^2 + b^2 + c^2)^2 - k*(a^3*b + b^3*c + c^3*a)')
 
 # Ô kết quả - Thêm font size
 ttk.Label(left_frame, text="Output:").pack(anchor=tk.W)
@@ -117,9 +117,8 @@ def dummy_command():
 
 
 buttons = [
-    ("PQR", pqr_convert),
-    ("UVW", dummy_command),
-    ("Simplify", dummy_command),
+    ("pqr", pqr_convert),
+    ("uvw", dummy_command),
     ("Clear", dummy_command)
 ]
 
