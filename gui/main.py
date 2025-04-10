@@ -124,7 +124,13 @@ buttons = [
 ]
 
 for text, cmd in buttons:
-    btn = ttk.Button(right_frame, text=text, width=12, command=cmd)
+    btn = ttk.Button(
+        right_frame,
+        text=text,
+        width=20,
+        command=cmd,
+        cursor="hand2"
+    )
     btn.pack(pady=8, ipady=5)
 
 root.mainloop()
