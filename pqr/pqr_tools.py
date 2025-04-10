@@ -106,7 +106,7 @@ def pqr(expr: str, symbols: List[str] = []):
     eqs = poly_zero(F - poly)
     eqs = sp.solve(eqs, coeffs)
     if eqs:
-        subs = pqr_template.xreplace(eqs)
-        return subs
+        return pqr_template.xreplace(eqs)
+        # return subs
     else:
         return "Unable to convert. Please check the input expression."

@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 
 import sympy as sp
+from sympy import Expr
 
-from gui.tooltip import ToolTip
 from pqr.pqr_tools import pqr
+from util.tooltip import ToolTip
 
 
 # Hàm lấy dữ liệu từ ô Input
@@ -48,8 +49,12 @@ def pqr_convert():
 def uvw_convert():
     try:
         poly = get_input()
-        result = f"{poly}"
-        output(result)
+        pvars = get_variables()
+        p, q, r, u, v, w = sp.symbols('p q r u v w')
+
+        fpqr = pqr(poly, pvars)
+        fuvw = fpqr.xreplace({p: 3 * u, q: 3 * v ** 2, r: w ** 3})
+        output(fuvw)
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
@@ -118,8 +123,8 @@ def dummy_command():
 
 buttons = [
     ("pqr", pqr_convert),
-    ("uvw", dummy_command),
-    ("Clear", dummy_command)
+    ("uvw", uvw_convert),
+    # ("Clear", dummy_command)
 ]
 
 for text, cmd in buttons:
