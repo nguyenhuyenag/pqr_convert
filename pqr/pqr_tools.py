@@ -103,16 +103,8 @@ def pqr(expr: str, symbols: List[str] = []):
     eqs = poly_zero(F - poly)
     eqs = sp.solve(eqs, coeffs)
     if eqs:
-        print(eqs)
         subs = pqr_template.xreplace(eqs)
-        print(subs)
         return subs
     else:
         print('Not found')
     return []
-
-
-##########################################################
-# f = 'a^3+b^3+c^3'
-f = 'a^3*b+b^3*c+c^3*a'
-pqr(f)

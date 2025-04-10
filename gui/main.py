@@ -3,6 +3,8 @@ from tkinter import ttk, scrolledtext, messagebox
 
 import sympy as sp
 
+from pqr.pqr_tools import pqr
+
 
 # Hàm lấy dữ liệu từ ô Input
 def get_input():
@@ -19,8 +21,7 @@ def pqr_convert():
     try:
         poly = get_input()
         # TODO: xử lý đa thức ở đây nếu cần
-        result = f"{poly}"
-        output(result)
+        output(pqr(poly))
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
