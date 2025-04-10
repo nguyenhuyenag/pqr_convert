@@ -34,13 +34,45 @@ def uvw_convert():
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
+#####################################################
+import tkinter as tk
+from tkinter import ttk, scrolledtext
 
-# Tạo cửa sổ
+
+class ToolTip:
+    def __init__(self, widget, text):
+        self.widget = widget
+        self.text = text
+        self.tip_window = None
+        self.widget.bind("<Enter>", self.show_tip)
+        self.widget.bind("<Leave>", self.hide_tip)
+
+    def show_tip(self, event=None):
+        x, y, _, _ = self.widget.bbox("insert")
+        x += self.widget.winfo_rootx() + 25
+        y += self.widget.winfo_rooty() + 25
+
+        self.tip_window = tk.Toplevel(self.widget)
+        self.tip_window.wm_overrideredirect(True)
+        self.tip_window.wm_geometry(f"+{x}+{y}")
+
+        label = tk.Label(self.tip_window, text=self.text, justify=tk.LEFT,
+                         background="#ffffe0", relief=tk.SOLID, borderwidth=1,
+                         font=('Arial', 10))
+        label.pack()
+
+    def hide_tip(self, event=None):
+        if self.tip_window:
+            self.tip_window.destroy()
+        self.tip_window = None
+
+
+# Tạo cửa sổ chính
 root = tk.Tk()
 root.title("PQR Convert")
 root.geometry("800x600")
 
-# Main container (chia làm 2 phần: trái + phải)
+# Main container
 main_frame = ttk.Frame(root)
 main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
@@ -48,31 +80,60 @@ main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 left_frame = ttk.Frame(main_frame)
 left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-# Ô nhập bậc
-h = 12
-ttk.Label(left_frame, text="Input:").pack(anchor=tk.W)
-input_poly = scrolledtext.ScrolledText(left_frame, height=h, wrap=tk.WORD)
-input_poly.pack(fill=tk.X, pady=5)
-input_poly.insert(tk.END, "a^2+b^2+c^2")  # default value
+# Frame cho variables
+variables_frame = ttk.Frame(left_frame)
+variables_frame.pack(fill=tk.X, pady=(0, 10))
+
+# Dòng 1: Label + Tooltip
+var_label_frame = ttk.Frame(variables_frame)
+var_label_frame.pack(fill=tk.X)
+ttk.Label(var_label_frame, text="Variables:").pack(side=tk.LEFT)
+
+# Tooltip
+tooltip_label = ttk.Label(var_label_frame, text="(?)", foreground="blue")
+tooltip_label.pack(side=tk.LEFT, padx=(5, 0))
+ToolTip(tooltip_label, text="Nhập các biến, cách nhau bằng dấu phẩy\nVí dụ: a,b,c,x,y,z")
+
+# Dòng 2: Ô nhập
+var_entry = ttk.Entry(variables_frame)
+var_entry.pack(fill=tk.X)
+var_entry.insert(0, 'a,b,c')
+
+# Ô nhập đa thức
+ttk.Label(left_frame, text="Biểu thức đa thức:").pack(anchor=tk.W)
+input_poly = scrolledtext.ScrolledText(left_frame, height=12, wrap=tk.WORD)
+input_poly.pack(fill=tk.BOTH, expand=True, pady=5)
+input_poly.insert(tk.END, 'a^5 + b^5 + c^5 + k*(a^4*b + b^4*c + c^4*a)')
 
 # Ô kết quả
-ttk.Label(left_frame, text="Output:").pack(anchor=tk.W)
-output_text = scrolledtext.ScrolledText(left_frame, height=15 - h, wrap=tk.WORD)
+ttk.Label(left_frame, text="Kết quả:").pack(anchor=tk.W)
+output_text = scrolledtext.ScrolledText(left_frame, height=8, wrap=tk.WORD)
 output_text.pack(fill=tk.BOTH, expand=True)
 
-# Đường kẻ DỌC phân cách
+# Đường kẻ dọc phân cách
 separator = ttk.Separator(main_frame, orient=tk.VERTICAL)
 separator.pack(side=tk.LEFT, fill=tk.Y, padx=10)
 
-# Phần PHẢI (3 nút)
-right_frame = ttk.Frame(main_frame, width=100)
+# Phần PHẢI (các nút chức năng)
+right_frame = ttk.Frame(main_frame, width=120)
 right_frame.pack(side=tk.LEFT, fill=tk.Y)
 
-# Các nút xếp DỌC từ trên xuống
-btn_pqr = ttk.Button(right_frame, text="pqr", width=10, command=pqr_convert)
-btn_pqr.pack(pady=10)
 
-btn_uvw = ttk.Button(right_frame, text="uvw", width=10, command=uvw_convert)
-btn_uvw.pack(pady=10)
+# Các nút chức năng (tạm thời dùng hàm giả định)
+def dummy_command():
+    print("Button clicked")
+
+
+buttons = [
+    ("PQR", dummy_command),
+    ("UVW", dummy_command),
+    ("Simplify", dummy_command),
+    ("Clear", dummy_command)
+]
+
+for text, cmd in buttons:
+    btn = ttk.Button(right_frame, text=text, width=12, command=cmd)
+    btn.pack(pady=8, ipady=5)
 
 root.mainloop()
+

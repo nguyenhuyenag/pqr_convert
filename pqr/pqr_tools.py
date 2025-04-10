@@ -90,6 +90,9 @@ def pqr(expr: str, symbols: List[str] = []):
         symbols = sp_symbols(symbols)
         poly = Poly(expr, symbols)
 
+    if len(symbols) != 3:
+        return 'The number of variables must be 3'
+
     deg = poly.total_degree()
     pqr_template, coeffs = create_pqr(symbols=symbols, degree=deg)
 
@@ -107,4 +110,5 @@ def pqr(expr: str, symbols: List[str] = []):
         return subs
     else:
         print('Not found')
+
     return []
