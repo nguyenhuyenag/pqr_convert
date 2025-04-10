@@ -53,16 +53,13 @@ def generate_pqr(degree: int, coeff_name: str = 'm'):
     symbols = ['p', 'q', 'r']
 
     a, b, c, p, q, r = sp_symbols("a b c p q r")
-    L = {p: a + b + c, q: a * b + b * c + c * a, r: a * b * c}
-    monomial_list = monomials(symbols, degree)
+    subs_list = {p: a + b + c, q: a * b + b * c + c * a, r: a * b * c}
 
+    monomial_list = monomials(symbols, degree)
     for item in monomial_list:
         # Convert to Expr, substitute, expand, then back to Poly
-        substituted_expr = Poly(item, p, q, r).as_expr().subs(L)
-        expanded_expr = substituted_expr.expand()
-
-        # Now compute degree in a, b, c
-        degree_abc = Poly(expanded_expr, a, b, c).total_degree()
+        expr_abc = Poly(item, p, q, r).as_expr().subs(subs_list).expand()
+        degree_abc = Poly(expr_abc, a, b, c).total_degree()
 
         if degree_abc <= degree:
             coeff = Symbol(f'{coeff_name}{inext}')
@@ -78,6 +75,6 @@ def create_pqr(degree: int):
 
 
 ##########################################################
-g_pqr = generate_pqr(degree=1, coeff_name='t')
+g_pqr = generate_pqr(degree=3, coeff_name='m')
 print(g_pqr[0].as_expr())
-print(g_pqr[1])
+# print(g_pqr[1])
