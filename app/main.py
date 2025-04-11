@@ -67,16 +67,17 @@ def btn_pqr():
 
 
 def btn_uvw():
-    try:
-        poly = get_polynomial()
-        pvars = get_variables()
-        p, q, r, u, v, w = sp.symbols('p q r u v w')
-
-        fpqr = pqr(poly, pvars)
-        fuvw = fpqr.xreplace({p: 3 * u, q: 3 * v ** 2, r: w ** 3})
-        output(fuvw)
-    except Exception as e:
-        messagebox.showerror("Error", str(e))
+    # try:
+    #     poly = get_polynomial()
+    #     pvars = get_variables()
+    #     p, q, r, u, v, w = sp.symbols('p q r u v w')
+    #
+    #     fpqr = pqr(poly, pvars)
+    #     fuvw = fpqr.xreplace({p: 3 * u, q: 3 * v ** 2, r: w ** 3})
+    #     output(fuvw)
+    # except Exception as e:
+    #     messagebox.showerror("Error", str(e))
+    pass
 
 
 #####################################################
@@ -143,8 +144,7 @@ def dummy_command():
 
 buttons = [
     ("pqr", btn_pqr),
-    ("uvw", btn_uvw),
-    # ("Clear", dummy_command)
+    ("uvw", btn_uvw)
 ]
 
 for text, cmd in buttons:

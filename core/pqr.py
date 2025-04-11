@@ -1,3 +1,5 @@
+from typing import List
+
 import sympy as sp
 from sympy import Symbol, Poly, S
 from sympy import symbols as sp_symbols
@@ -45,42 +47,8 @@ def generate_pqr_cyclic(x1: Symbol, x2: Symbol, x3: Symbol, degree: int, coeff_n
     return expr, coeffs
 
 
-# def pqr(expr: str, symbols: List[str] = []):
-#     expr = sp.simplify(expr)
-#     poly = Poly(expr)
-#
-#     if not symbols:
-#         symbols = poly.gens
-#     else:
-#         symbols = sp_symbols(symbols)
-#         poly = Poly(expr, symbols)
-#
-#     return pqr(poly)
-
-# if len(symbols) != 3:
-#     return 'The number of variables must be 3'
-#
-# deg = poly.total_degree()
-# pqr_template, coeffs = create_pqr(symbols=symbols, degree=deg)
-#
-# a, b, c = symbols
-# p, q, r = sp_symbols(['p', 'q', 'r'])
-#
-# subs_list = {p: a + b + c, q: a * b + b * c + c * a, r: a * b * c}
-# F = pqr_template.xreplace(subs_list).expand()
-#
-# F = Poly(str(F), symbols)
-# eqs = poly_zero(F - poly)
-# eqs = sp.solve(eqs, coeffs)
-# if eqs:
-#     return pqr_template.xreplace(eqs)
-# else:
-#     return "Unable to convert. Please check the input expression."
-
-
 def pqr(poly: Poly):
     pvars = poly.gens
-
     if len(pvars) != 3:
         return None, "The polynomial must have exactly 3 variables"
 
@@ -93,17 +61,23 @@ def pqr(poly: Poly):
         # Generate the general pqr-form template
         pqr_template, coeffs = generate_pqr_cyclic(a, b, c, poly.total_degree(), coefficient_prefix)
         # Convert back to polynomial form
-        poly_subs = Poly(pqr_template.xreplace(subs).expand(), pvars)
+        poly_template = Poly(pqr_template.xreplace(subs).expand(), pvars)
         # Solve for coefficients
-        eqs = poly_zero(poly_subs - poly)
+        eqs = poly_zero(poly_template - poly)
         solution = sp.solve(eqs, coeffs)
         if not solution:
             return None, "Unable to convert"
 
-        return pqr_template.xreplace(solution)
+        return pqr_template.xreplace(solution), None
     except Exception as e:
         return None, f'Conversion error: {str(e)}'
 
+
+def pqr_from_expr(expr: str, symbols: List[str]):
+    expr = sp.simplify(expr)
+    symbols = sp_symbols(symbols)
+    poly = Poly(expr, symbols)
+    return pqr(poly)
 
 ################################
 # f1 = generate_pqr(2)
@@ -115,8 +89,11 @@ def pqr(poly: Poly):
 # ff = create_pqr(a, b, c, 4)
 # print(ff[0])
 
+# Chỉ tạo 2 hàm pqr và pqr_from_expr
 # f = Poly('(a^2 + b^2 + c^2)^2-k*(a^3+b^3+c^3)*(a+b+c)', sp_symbols("a b c"))
-f = Poly('a+b+c')
-res = pqr(f)
-if res:
-    print(res)
+# f = '(a**2*b + b**2*c + c**2*a)*(a+b+c) - k*(a*b*c)+x+y+z'
+# res = pqr_from_expr(f, ['a', 'b', 'c'])
+# if res[0]:
+#     print(res[0])
+# else:
+#     print(res[1])
