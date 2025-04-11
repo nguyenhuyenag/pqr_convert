@@ -3,7 +3,7 @@
 #
 # import sympy as sp
 #
-# from pqr.pqr_tools import pqr
+# from core.pqr_tools import core
 #
 #
 # # Hàm lấy dữ liệu từ ô Input
@@ -21,7 +21,7 @@
 #     try:
 #         poly = get_input()
 #         # TODO: xử lý đa thức ở đây nếu cần
-#         output(pqr(poly))
+#         output(core(poly))
 #     except Exception as e:
 #         messagebox.showerror("Error", str(e))
 #
@@ -77,7 +77,7 @@
 # right_frame.pack(side=tk.LEFT, fill=tk.Y)
 #
 # # Các nút xếp DỌC từ trên xuống
-# btn_pqr = ttk.Button(right_frame, text="pqr", width=10, command=pqr_convert)
+# btn_pqr = ttk.Button(right_frame, text="core", width=10, command=pqr_convert)
 # btn_pqr.pack(pady=10)
 #
 # btn_uvw = ttk.Button(right_frame, text="uvw", width=10, command=uvw_convert)

@@ -28,7 +28,7 @@
 
 #############################################
 
-# def pqr(expr):
+# def core(expr):
 #     # expr = 'a**2+b**2+c**2+k*(a*b+b*c+c*a)'
 #     f = Poly(expr)
 #     deg = f.total_degree()
@@ -59,7 +59,7 @@
 # F = createPqr(deg=2, var='m')
 # print(F.as_expr())
 # f = 'a**2+b**2+c**2+k*(a*b+b*c+c*a)'
-# pqr(f)
+# core(f)
 
 # result = monomials(['p', 'q', 'r'], 2)
 # print(result)
@@ -71,3 +71,22 @@
 # print(res)
 # s = solve(res[0], res[1])
 # print(s)
+
+
+
+# # Sinh ngẫu nhiên đa thức với các biến và bậc cho trước
+# def random_polynomial(pvars: List[str], coeff_name: str = 'm', degree: int = 0) -> Poly:
+#     global inext
+#     # Initialize inext if not exists
+#     if 'inext' not in globals():
+#         inext = 1
+#
+#     poly = S.Zero
+#     pvars = sympy.symbols(pvars)
+#     monomial_list = monomials(pvars, degree)
+#     for mono in monomial_list:
+#         coeff = Symbol(f'{coeff_name}{inext}')
+#         poly += coeff * mono
+#         inext += 1
+#
+#     return Poly(poly, *pvars)

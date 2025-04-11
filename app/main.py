@@ -2,25 +2,16 @@ import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 
 import sympy as sp
-from sympy import Expr
+from sympy import Poly
 
-from pqr.pqr_tools import pqr
+from core.pqr import pqr
 from util.tooltip import ToolTip
-
-
-# Hàm lấy dữ liệu từ ô Input
-def get_input():
-    return sp.simplify(input_poly.get(1.0, tk.END).strip())
 
 
 def get_variables():
     """Lấy giá trị từ ô variables và trả về danh sách các biến đã được chuẩn hóa"""
     # Lấy nội dung từ ô nhập
     var_text = var_entry.get().strip()
-
-    # Nếu ô trống, trả về danh sách mặc định
-    if not var_text:
-        return ['a', 'b', 'c']
 
     # Tách các biến bằng dấu phẩy và loại bỏ khoảng trắng thừa
     variables = [v.strip() for v in var_text.split(',')]
@@ -31,24 +22,53 @@ def get_variables():
     return variables
 
 
+def parse_symbols(var_text):
+    """Lấy giá trị từ ô variables và trả về danh sách các biến đã được chuẩn hóa"""
+    # Lấy nội dung từ ô nhập
+    # var_text = var_entry.get().strip()
+
+    # Tách các biến bằng dấu phẩy và loại bỏ khoảng trắng thừa
+    variables = [v.strip() for v in var_text.split(',')]
+
+    # Lọc bỏ các biến rỗng (nếu có)
+    variables = [v for v in variables if v]
+
+    return variables
+
+
+# Hàm lấy dữ liệu từ ô Input
+def get_polynomial():
+    return sp.simplify(input_poly.get(1.0, tk.END).strip())
+
+
+def validate_input(poly, pvars):
+    f = Poly(poly)
+    pvars = parse_symbols(pvars)
+    if len(f.free_symbols) > 3:
+        if pvars not in f.free_symbols:
+            output("The number of variables must be less than or equal to 3.")
+
+    return poly, []
+
+
 # Hàm chèn kết quả vào ô Output
 def output(poly):
     output_text.delete(1.0, tk.END)  # Xóa nội dung cũ
     output_text.insert(tk.END, str(poly))  # Chèn kết quả mới
 
 
-def pqr_convert():
+def btn_pqr():
     try:
-        poly = get_input()
+        poly = get_polynomial()
         pvars = get_variables()
         output(pqr(poly, pvars))
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
 
-def uvw_convert():
+def btn_uvw():
     try:
-        poly = get_input()
+        poly = get_polynomial()
         pvars = get_variables()
         p, q, r, u, v, w = sp.symbols('p q r u v w')
 
@@ -122,8 +142,8 @@ def dummy_command():
 
 
 buttons = [
-    ("pqr", pqr_convert),
-    ("uvw", uvw_convert),
+    ("pqr", btn_pqr),
+    ("uvw", btn_uvw),
     # ("Clear", dummy_command)
 ]
 
