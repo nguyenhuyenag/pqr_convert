@@ -46,22 +46,22 @@ def validate_input(poly, pvars):
     pvars = parse_symbols(pvars)
     if len(f.free_symbols) > 3:
         if pvars not in f.free_symbols:
-            output("The number of variables must be less than or equal to 3.")
+            set_output("The number of variables must be less than or equal to 3.")
 
     return poly, []
 
 
 # Hàm chèn kết quả vào ô Output
-def output(poly):
+def set_output(data):
     output_text.delete(1.0, tk.END)  # Xóa nội dung cũ
-    output_text.insert(tk.END, str(poly))  # Chèn kết quả mới
+    output_text.insert(tk.END, str(data))  # Chèn kết quả mới
 
 
 def btn_pqr():
     try:
         poly = get_polynomial()
         pvars = get_variables()
-        output(pqr(poly, pvars))
+        set_output(pqr(poly, pvars))
     except Exception as e:
         messagebox.showerror("Error", str(e))
 

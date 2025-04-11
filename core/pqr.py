@@ -37,7 +37,7 @@ def generate_pqr_cyclic(x1: Symbol, x2: Symbol, x3: Symbol, degree: int, coeff_n
 
     # Extract coefficients
     p, q, r = sp.symbols("p q r")
-    coeffs = (f1.free_symbols | f2.free_symbols) - {x1, x2, x3, p, q, r}
+    coeffs = (f1.free_symbols | f2.free_symbols) - {x1, x2, x3, p, q, r, sp.symbols(coeff_name)}
 
     # Create cyclic term
     f_cyclic = (x1 - x2) * (x2 - x3) * (x3 - x1)
@@ -55,13 +55,17 @@ def pqr(poly: Poly):
     try:
         a, b, c = pvars
         p, q, r = sp.symbols("p q r")
-        coefficient_prefix = 'm_'
+        coefficient_prefix = 'm'
+
         # Substitution rules for symmetric polynomials
         subs = {p: a + b + c, q: a * b + b * c + c * a, r: a * b * c}
+
         # Generate the general pqr-form template
         pqr_template, coeffs = generate_pqr_cyclic(a, b, c, poly.total_degree(), coefficient_prefix)
+
         # Convert back to polynomial form
         poly_template = Poly(pqr_template.xreplace(subs).expand(), pvars)
+
         # Solve for coefficients
         eqs = poly_zero(poly_template - poly)
         solution = sp.solve(eqs, coeffs)
@@ -79,6 +83,7 @@ def pqr_from_expr(expr: str, symbols: List[str]):
     poly = Poly(expr, symbols)
     return pqr(poly)
 
+
 ################################
 # f1 = generate_pqr(2)
 # f2 = generate_pqr(3)
@@ -90,8 +95,14 @@ def pqr_from_expr(expr: str, symbols: List[str]):
 # print(ff[0])
 
 # Chỉ tạo 2 hàm pqr và pqr_from_expr
-# f = Poly('(a^2 + b^2 + c^2)^2-k*(a^3+b^3+c^3)*(a+b+c)', sp_symbols("a b c"))
-# f = '(a**2*b + b**2*c + c**2*a)*(a+b+c) - k*(a*b*c)+x+y+z'
+f = Poly('(a**2*b+b**2*c+c**2*a)')
+res = pqr(f)
+if res[0]:
+    print(res[0])
+else:
+    print(res[1])
+
+# f = '(a**2*b + b**2*c + c**2*a)*(a+b+c) - k*(a*b*c)'
 # res = pqr_from_expr(f, ['a', 'b', 'c'])
 # if res[0]:
 #     print(res[0])

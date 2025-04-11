@@ -1,11 +1,11 @@
 from itertools import combinations_with_replacement
-from typing import List, Union
+from typing import List, Union, Set, Tuple
 
 import sympy as sp
-from sympy import Poly, Expr, S, Mul, Symbol
+from sympy import Poly, Expr, S, Mul, Symbol, IndexedBase
 
 # Global polynomial index
-_index = 1
+_coeff_counter = 1
 
 
 # Sinh các đơn thức từ danh sách các biến
@@ -27,25 +27,30 @@ def monomials(symbols: Union[List[str], List[Symbol]], degree: int, is_homogeneo
     return list(monomial_list)
 
 
-# Tạo đa thức từ danh sách các đơn thức
-def generate_polynomial(monomial_list: List[Expr], coeff_name: str = 'm') -> Poly:
-    global _index
+def generate_polynomial(monomial_list: List[Expr], coeff_name: str = 'idx') -> Tuple[Poly, List[Symbol]]:
+    """Tạo đa thức với hệ số duy nhất giữa các lần gọi"""
+    global _coeff_counter
 
-    coeffs = []
+    idx = IndexedBase(coeff_name)
+
     poly = S.Zero
+    pvars = set()
+    coeffs = []
+
     for mono in monomial_list:
-        coeff = Symbol(f'{coeff_name}{_index}')
+        coeff = idx[_coeff_counter]
         poly += coeff * mono
         coeffs.append(coeff)
-        _index += 1
-
-    poly = Poly(poly)
-    pvars = poly.free_symbols.difference(coeffs)
+        pvars.union(mono.free_symbols)
+        _coeff_counter += 1  # Tăng chỉ số
 
     return Poly(poly, *pvars)
 
 
 # Tạo hệ phương trình với tất cả các hệ số của đa thức đều = 0
-def poly_zero(poly: Poly):
-    coeffs = poly.as_dict().values()
-    return {coeff for coeff in coeffs}
+# def poly_zero(poly: Poly):
+#     coeffs = poly.as_dict().values()
+#     return {coeff for coeff in coeffs}
+def poly_zero(poly: Poly) -> Set[Expr]:
+    """Extract coefficients from polynomial and set them to zero."""
+    return set(poly.as_dict().values())
