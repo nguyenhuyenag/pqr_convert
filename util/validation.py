@@ -1,5 +1,6 @@
 import sympy as sp
 from sympy import Poly
+from sympy.polys.polyoptions import Polys
 
 
 def parse_symbols(str_vars):
@@ -8,16 +9,24 @@ def parse_symbols(str_vars):
     return {sp.symbols(v) for v in variables}
 
 
-def parse_input_to_poly(input_poly: str, input_vars: str):
+# Validate input polynomial and variables
+# numer, denom, pvars
+# numer, 1, pvars
+def parse_input(input_poly: str, input_vars: str):
     pvars = parse_symbols(input_vars)
     if len(pvars) != 3:
-        return None, "Please enter exactly 3 variables"
+        return None, None, "Please enter exactly 3 variables"
 
-    poly = Poly(sp.sympify(input_poly))
+    try:
+        expr = sp.sympify(input_poly)
 
-    # Nếu pvars không có trong biểu thức đa thức
-    if not pvars.issubset(poly.free_symbols):
-        return None, f"Variables {pvars} not found in polynomial"
+        # Nếu pvars không có trong biểu thức đa thức
+        if not pvars.issubset(expr.free_symbols):
+            return None, None, f"Variables {pvars} not found in polynomial"
 
-    poly = Poly(poly.as_expr(), *pvars)
-    return poly, None
+        factor = sp.together(expr)
+        numer, denom = factor.as_numer_denom()
+        return Poly(numer, *pvars), Poly(denom, *pvars), None
+
+    except Exception as e:
+        return None, f"Invalid polynomial: {e}"

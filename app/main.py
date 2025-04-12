@@ -3,7 +3,7 @@ from tkinter import ttk, scrolledtext
 
 from core.pqr import pqr
 from util.tooltip import ToolTip
-from util.validation import parse_input_to_poly
+from util.validation import parse_input
 
 
 # Hàm lấy dữ liệu từ ô Variables
@@ -19,12 +19,12 @@ def get_polynomial():
 def btn_pqr():
     ipoly = get_polynomial()
     ivars = get_variables()
-    poly, error_message = parse_input_to_poly(ipoly, ivars)
+    numer, denom, error_message = parse_input(ipoly, ivars)
     if error_message:
         set_output(error_message)
         return
 
-    result, error_message = pqr(poly)
+    result, error_message = pqr(numer)
     if result:
         set_output(result.as_expr())
     else:
@@ -82,7 +82,8 @@ input_vars.insert(0, 'a,b,c')
 ttk.Label(left_frame, text="Input:").pack(anchor=tk.W)
 input_poly = scrolledtext.ScrolledText(left_frame, height=8, wrap=tk.WORD, font=custom_font)
 input_poly.pack(fill=tk.BOTH, expand=True, pady=5)
-input_poly.insert(tk.END, '(a^2 + b^2 + c^2)^2 - k*(a^3*b + b^3*c + c^3*a)')
+# input_poly.insert(tk.END, '(a^2 + b^2 + c^2)^2 - k*(a^3*b + b^3*c + c^3*a)')
+input_poly.insert(tk.END, 'a/b+b/c+c/a-k*(a+b+c)')
 
 # Ô kết quả - Thêm font size
 ttk.Label(left_frame, text="Output:").pack(anchor=tk.W)
