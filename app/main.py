@@ -1,4 +1,5 @@
 import tkinter as tk
+import webbrowser
 from tkinter import ttk, scrolledtext
 
 from core.pqr import pqr
@@ -115,6 +116,38 @@ for text, cmd in buttons:
         cursor="hand2"
     )
     btn.pack(pady=8, ipady=5)
+
+
+# Thêm thông tin tác giả ở dưới cùng, bên phải
+# author_label = ttk.Label(right_frame, text="@nguyenhuyenag", font=('Consolas', 10))
+# author_label.pack(side=tk.BOTTOM, pady=(10, 0))
+
+# Thêm thông tin tác giả dưới ô Output
+# author_label = ttk.Label(left_frame, text="@nguyenhuyenag", font=('Consolas', 10), anchor='e')
+# author_label.pack(fill=tk.X, pady=(5, 0))
+
+# Thêm thông tin tác giả dưới ô Output (canh trái)
+# author_label = ttk.Label(left_frame, text="@nguyenhuyenag", font=('Consolas', 10), anchor='w', cursor="hand2")
+# author_label.pack(fill=tk.X, pady=(5, 0))
+
+# Hàm mở URL
+def open_author_link(event):
+    webbrowser.open_new("https://nguyenhuyenag.wordpress.com/")
+
+
+# Label có thể click mở link
+author_label = ttk.Label(
+    left_frame,
+    text="@nguyenhuyenag",
+    font=('Consolas', 10),
+    anchor='w',
+    cursor="hand2",
+    foreground="blue"  # Tùy chọn: để giống hyperlink
+)
+author_label.pack(fill=tk.X, pady=(5, 0))
+
+# Gắn sự kiện click chuột trái
+author_label.bind("<Button-1>", open_author_link)
 
 if __name__ == "__main__":
     root.mainloop()
