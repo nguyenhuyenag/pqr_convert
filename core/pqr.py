@@ -82,29 +82,3 @@ def pqr_from_expr(expr: str, symbols: List[str]):
     symbols = sp_symbols(symbols)
     poly = Poly(expr, symbols)
     return pqr(poly)
-
-
-################################
-# f1 = generate_pqr(2)
-# f2 = generate_pqr(3)
-# print(f1)
-# print(f2)
-# print(f1.coeffs() + f2.coeffs())
-# a, b, c = sp_symbols(['x', 'y', 'z'])
-# ff = create_pqr(a, b, c, 4)
-# print(ff[0])
-
-# Chỉ tạo 2 hàm pqr và pqr_from_expr
-f = Poly('(a**2*b+b**2*c+c**2*a)')
-res = pqr(f)
-if res[0]:
-    print(res[0])
-else:
-    print(res[1])
-
-# f = '(a**2*b + b**2*c + c**2*a)*(a+b+c) - k*(a*b*c)'
-# res = pqr_from_expr(f, ['a', 'b', 'c'])
-# if res[0]:
-#     print(res[0])
-# else:
-#     print(res[1])

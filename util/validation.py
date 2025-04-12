@@ -1,6 +1,5 @@
 import sympy as sp
 from sympy import Poly
-from sympy.polys.polyoptions import Polys
 
 
 def parse_symbols(str_vars):
