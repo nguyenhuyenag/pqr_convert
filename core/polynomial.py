@@ -67,9 +67,3 @@ def generate_polynomial(monomial_list: List[Expr], coeff_name: str = 'm') -> Tup
 def poly_zero(poly: Poly) -> Set[Expr]:
     """Extract the set of constant terms (coefficients) from a sympy polynomial."""
     return set(poly.as_dict().values())
-
-
-mons = monomials(['x', 'y'], 2)
-poly = generate_polynomial(mons, 'm')
-print(poly.as_expr())
-# Unresolved attribute reference 'as_expr' for class '(Poly, list)'
