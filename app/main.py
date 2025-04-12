@@ -1,83 +1,44 @@
 import tkinter as tk
-from tkinter import ttk, scrolledtext, messagebox
-
-import sympy as sp
-from sympy import Poly
+from tkinter import ttk, scrolledtext
 
 from core.pqr import pqr
 from util.tooltip import ToolTip
+from util.validation import parse_input_to_poly
 
 
+# Hàm lấy dữ liệu từ ô Variables
 def get_variables():
-    """Lấy giá trị từ ô variables và trả về danh sách các biến đã được chuẩn hóa"""
-    # Lấy nội dung từ ô nhập
-    var_text = var_entry.get().strip()
-
-    # Tách các biến bằng dấu phẩy và loại bỏ khoảng trắng thừa
-    variables = [v.strip() for v in var_text.split(',')]
-
-    # Lọc bỏ các biến rỗng (nếu có)
-    variables = [v for v in variables if v]
-
-    return variables
-
-
-def parse_symbols(var_text):
-    """Lấy giá trị từ ô variables và trả về danh sách các biến đã được chuẩn hóa"""
-    # Lấy nội dung từ ô nhập
-    # var_text = var_entry.get().strip()
-
-    # Tách các biến bằng dấu phẩy và loại bỏ khoảng trắng thừa
-    variables = [v.strip() for v in var_text.split(',')]
-
-    # Lọc bỏ các biến rỗng (nếu có)
-    variables = [v for v in variables if v]
-
-    return variables
+    return input_vars.get().strip() or ''
 
 
 # Hàm lấy dữ liệu từ ô Input
 def get_polynomial():
-    return sp.simplify(input_poly.get(1.0, tk.END).strip())
+    return input_poly.get(1.0, tk.END).strip() or ''
 
 
-def validate_input(poly, pvars):
-    f = Poly(poly)
-    pvars = parse_symbols(pvars)
-    if len(f.free_symbols) > 3:
-        if pvars not in f.free_symbols:
-            set_output("The number of variables must be less than or equal to 3.")
+def btn_pqr():
+    ipoly = get_polynomial()
+    ivars = get_variables()
+    poly, error_message = parse_input_to_poly(ipoly, ivars)
+    if error_message:
+        set_output(error_message)
+        return
 
-    return poly, []
+    result, error_message = pqr(poly)
+    if result:
+        set_output(result.as_expr())
+    else:
+        set_output(error_message)
+
+
+def btn_uvw():
+    return None
 
 
 # Hàm chèn kết quả vào ô Output
 def set_output(data):
     output_text.delete(1.0, tk.END)  # Xóa nội dung cũ
     output_text.insert(tk.END, str(data))  # Chèn kết quả mới
-
-
-def btn_pqr():
-    try:
-        poly = get_polynomial()
-        pvars = get_variables()
-        set_output(pqr(poly, pvars))
-    except Exception as e:
-        messagebox.showerror("Error", str(e))
-
-
-def btn_uvw():
-    # try:
-    #     poly = get_polynomial()
-    #     pvars = get_variables()
-    #     p, q, r, u, v, w = sp.symbols('p q r u v w')
-    #
-    #     fpqr = pqr(poly, pvars)
-    #     fuvw = fpqr.xreplace({p: 3 * u, q: 3 * v ** 2, r: w ** 3})
-    #     output(fuvw)
-    # except Exception as e:
-    #     messagebox.showerror("Error", str(e))
-    pass
 
 
 #####################################################
@@ -113,9 +74,9 @@ ToolTip(tooltip_label,
         text="If there are multiple variables, enter the base variables separated by commas.\nFor example: a,b,c")
 
 # Dòng 2: Ô nhập - Thêm font size
-var_entry = ttk.Entry(variables_frame, font=custom_font)
-var_entry.pack(fill=tk.X)
-var_entry.insert(0, 'a,b,c')
+input_vars = ttk.Entry(variables_frame, font=custom_font)
+input_vars.pack(fill=tk.X)
+input_vars.insert(0, 'a,b,c')
 
 # Ô nhập đa thức - Thêm font size
 ttk.Label(left_frame, text="Input:").pack(anchor=tk.W)
