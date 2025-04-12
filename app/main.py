@@ -25,10 +25,7 @@ def btn_pqr():
         return
 
     result, error_message = pqr(numer)
-    if result:
-        set_output(result.as_expr())
-    else:
-        set_output(error_message)
+    set_output(result.as_expr() if result else error_message)
 
 
 def btn_uvw():

@@ -55,16 +55,16 @@ def pqr(poly: Poly):
     try:
         a, b, c = pvars
         p, q, r = sp.symbols("p q r")
-        coefficient_prefix = 'm'
+        coeff_name = 'm'
 
         # Substitution rules for symmetric polynomials
         subs = {p: a + b + c, q: a * b + b * c + c * a, r: a * b * c}
 
-        # Generate the general pqr-form template
-        pqr_template, coeffs = generate_pqr_cyclic(a, b, c, poly.total_degree(), coefficient_prefix)
+        # Generate the generalized pqr polynomial
+        pqr_general, coeffs = generate_pqr_cyclic(a, b, c, poly.total_degree(), coeff_name)
 
         # Convert back to polynomial form
-        poly_template = Poly(pqr_template.xreplace(subs).expand(), pvars)
+        poly_template = Poly(pqr_general.xreplace(subs).expand(), pvars)
 
         # Solve for coefficients
         eqs = poly_zero(poly_template - poly)
@@ -72,9 +72,10 @@ def pqr(poly: Poly):
         if not solution:
             return None, "Unable to convert"
 
-        return pqr_template.xreplace(solution), None
+        return pqr_general.xreplace(solution), None
     except Exception as e:
-        return None, f'Conversion error: {str(e)}'
+        # return None, f'Conversion error: {str(e)}'
+        return None, "Unable to convert"
 
 
 def pqr_from_expr(expr: str, symbols: List[str]):

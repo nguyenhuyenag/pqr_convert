@@ -4,16 +4,14 @@ from typing import List, Union, Set, Tuple
 import sympy as sp
 from sympy import Poly, Expr, S, Mul, Symbol, IndexedBase
 
-# Global polynomial index
 _coeff_counter = 1
+"""Global counter for indexing coefficients in generated polynomials."""
 
 
-# Sinh các đơn thức từ danh sách các biến
 def monomials(symbols: Union[List[str], List[Symbol]], degree: int, is_homogeneous: bool = False) -> List[Expr]:
-    # Convert List[str] to List[Symbol]
+    """ Generate a list of monomials up to a given total degree using specified variables. """
     symbols = [sp.symbols(x) if isinstance(x, str) else x for x in symbols]
 
-    # Initialize with 1 only for non-homogeneous case
     monomial_list = set() if is_homogeneous else {S.One}
 
     for deg in range(1, 1 + degree):
@@ -27,8 +25,8 @@ def monomials(symbols: Union[List[str], List[Symbol]], degree: int, is_homogeneo
     return list(monomial_list)
 
 
-def generate_polynomial(monomial_list: List[Expr], coeff_name: str = 'idx') -> Tuple[Poly, List[Symbol]]:
-    """Tạo đa thức với hệ số duy nhất giữa các lần gọi"""
+def generate_polynomial(monomial_list: List[Expr], coeff_name: str = 'm') -> Tuple[Poly, List[Symbol]]:
+    """Generate a symbolic polynomial with indexed coefficients from a list of monomials."""
     global _coeff_counter
 
     idx = IndexedBase(coeff_name)
@@ -47,10 +45,6 @@ def generate_polynomial(monomial_list: List[Expr], coeff_name: str = 'idx') -> T
     return Poly(poly, *pvars)
 
 
-# Tạo hệ phương trình với tất cả các hệ số của đa thức đều = 0
-# def poly_zero(poly: Poly):
-#     coeffs = poly.as_dict().values()
-#     return {coeff for coeff in coeffs}
 def poly_zero(poly: Poly) -> Set[Expr]:
-    """Extract coefficients from polynomial and set them to zero."""
+    """Extract the set of constant terms (coefficients) from a sympy polynomial."""
     return set(poly.as_dict().values())

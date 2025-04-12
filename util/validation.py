@@ -4,13 +4,11 @@ from sympy import Poly
 
 def parse_symbols(str_vars):
     variables = str_vars.split(",")
-    variables = [v.strip() for v in variables if v.strip()]
+    variables = {v.strip() for v in variables if v.strip()}
     return {sp.symbols(v) for v in variables}
 
 
 # Validate input polynomial and variables
-# numer, denom, pvars
-# numer, 1, pvars
 def parse_input(input_poly: str, input_vars: str):
     pvars = parse_symbols(input_vars)
     if len(pvars) != 3:
@@ -26,6 +24,5 @@ def parse_input(input_poly: str, input_vars: str):
         factor = sp.together(expr)
         numer, denom = factor.as_numer_denom()
         return Poly(numer, *pvars), Poly(denom, *pvars), None
-
     except Exception as e:
         return None, f"Invalid polynomial: {e}"
