@@ -1,7 +1,8 @@
 from typing import List
 
 import sympy as sp
-from sympy import Symbol, Poly, S
+from pandas.core.window import Expanding
+from sympy import Symbol, Poly, S, Expr
 from sympy import symbols as sp_symbols
 
 from core.polynomial import poly_zero, monomials, generate_polynomial
@@ -41,6 +42,7 @@ def generate_pqr_cyclic(x1: Symbol, x2: Symbol, x3: Symbol, degree: int, coeff_n
 
     # Create cyclic term
     f_cyclic = (x1 - x2) * (x2 - x3) * (x3 - x1)
+
     # Combine expressions
     expr = f1.as_expr() + f2.as_expr() * f_cyclic
 
@@ -72,9 +74,16 @@ def pqr(poly: Poly):
         if not solution:
             return None, "Unable to convert"
 
-        return pqr_general.xreplace(solution), None
+        result = pqr_general.xreplace(solution)
+
+        # print('Type:', type(result))
+
+        out = Poly(result, a, b, c, p, q, r, expand=False)
+        print(str(out))
+
+        return result, None
     except Exception as e:
-        # return None, f'Conversion error: {str(e)}'
+        print(f'Conversion error: {str(e)}')
         return None, "Unable to convert"
 
 

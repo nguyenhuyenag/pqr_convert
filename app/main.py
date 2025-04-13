@@ -30,8 +30,14 @@ def btn_pqr():
 
 
 def btn_uvw():
-    return None
+    ipoly = get_polynomial()
+    ivars = get_variables()
+    numer, denom, error_message = parse_input(ipoly, ivars)
+    if error_message:
+        set_output(error_message)
+        return
 
+    result, error_message = pqr(numer)
 
 # Hàm chèn kết quả vào ô Output
 def set_output(data):
