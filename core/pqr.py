@@ -1,11 +1,11 @@
 from typing import List
 
 import sympy as sp
-from pandas.core.window import Expanding
-from sympy import Symbol, Poly, S, Expr
+from sympy import Symbol, Poly, S
 from sympy import symbols as sp_symbols
 
 from core.polynomial import poly_zero, monomials, generate_polynomial
+from util import messages
 
 
 # Degree of pqr expression:
@@ -35,24 +35,21 @@ def generate_pqr_cyclic(x1: Symbol, x2: Symbol, x3: Symbol, degree: int, coeff_n
     # Generate pqr polynomials
     f1 = pqr_polynomial(degree, coeff_name)
     f2 = pqr_polynomial(degree - 3, coeff_name) if degree >= 3 else S.Zero
-
     # Extract coefficients
     p, q, r = sp.symbols("p q r")
     coeffs = (f1.free_symbols | f2.free_symbols) - {x1, x2, x3, p, q, r, sp.symbols(coeff_name)}
-
     # Create cyclic term
     f_cyclic = (x1 - x2) * (x2 - x3) * (x3 - x1)
-
     # Combine expressions
     expr = f1.as_expr() + f2.as_expr() * f_cyclic
-
     return expr, coeffs
 
 
 def pqr(poly: Poly):
     pvars = poly.gens
+    
     if len(pvars) != 3:
-        return None, "The polynomial must have exactly 3 variables"
+        return None, messages.expression_variable_count_error
 
     try:
         a, b, c = pvars
@@ -70,21 +67,16 @@ def pqr(poly: Poly):
 
         # Solve for coefficients
         eqs = poly_zero(poly_template - poly)
-        solution = sp.solve(eqs, coeffs)
-        if not solution:
-            return None, "Unable to convert"
+        root = sp.solve(eqs, coeffs)
+        if not root:
+            return None, messages.conversion_error
 
-        result = pqr_general.xreplace(solution)
-
-        # print('Type:', type(result))
-
-        out = Poly(result, a, b, c, p, q, r, expand=False)
-        print(str(out))
+        result = pqr_general.xreplace(root)
 
         return result, None
     except Exception as e:
-        print(f'Conversion error: {str(e)}')
-        return None, "Unable to convert"
+        # print(f'Conversion error: {str(e)}')
+        return None, messages.conversion_error
 
 
 def pqr_from_expr(expr: str, symbols: List[str]):

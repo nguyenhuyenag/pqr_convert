@@ -1,72 +1,121 @@
+import concurrent.futures
+import threading
+import time
 import tkinter as tk
 import webbrowser
 from tkinter import ttk, scrolledtext
 
 from core.pqr import pqr
+from core.uvw import uvw
 from util.tooltip import ToolTip
-from util.validation import parse_input
+from util.validation import parse_input, simplify_expression
 
 
-# Hàm lấy dữ liệu từ ô Variables
+# Get data from the Variables box
 def get_variables():
     return input_vars.get().strip() or ''
 
 
-# Hàm lấy dữ liệu từ ô Input
+# Get data from the Input box
 def get_polynomial():
     return input_poly.get(1.0, tk.END).strip() or ''
 
 
-def btn_pqr():
+# Run multiple threads
+def run_parallel_on_fraction(func, numer, denom):
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        future_numer = executor.submit(func, numer)
+        future_denom = executor.submit(func, denom)
+
+        numer_res, error_1 = future_numer.result()
+        denom_res, error_2 = future_denom.result()
+
+    if numer_res and denom_res:
+        return numer_res, denom_res, None
+
+    return None, None, error_1 or error_2
+
+
+def handle_btn_click(func):
     ipoly = get_polynomial()
     ivars = get_variables()
-    numer, denom, error_message = parse_input(ipoly, ivars)
-    if error_message:
-        set_output(error_message)
-        return
+    try:
+        start_time = time.time()
 
-    result, error_message = pqr(numer)
-    set_output(result.as_expr() if result else error_message)
+        numer, denom, error_message = parse_input(ipoly, ivars)
+        if error_message:
+            set_output(error_message)
+            time_label.config(text="⏱ Time: --")
+            return
+
+        numer, denom, error_message = run_parallel_on_fraction(func, numer, denom)
+        if error_message:
+            set_output(error_message)
+            time_label.config(text="⏱ Time: --")
+            return
+
+        res = simplify_expression(numer.as_expr() / denom.as_expr())
+        set_output(res)
+
+        elapsed_time = time.time() - start_time
+        time_label.config(text=f"⏱ Time: {elapsed_time:.4f} s")
+    except Exception as e:
+        set_output(f"Error: {e}")
+        time_label.config(text="⏱ Time: --")
+
+
+def btn_pqr():
+    handle_btn_click(pqr)
 
 
 def btn_uvw():
-    ipoly = get_polynomial()
-    ivars = get_variables()
-    numer, denom, error_message = parse_input(ipoly, ivars)
-    if error_message:
-        set_output(error_message)
-        return
+    handle_btn_click(uvw)
 
-    result, error_message = pqr(numer)
 
-# Hàm chèn kết quả vào ô Output
+# Output setter
 def set_output(data):
     output_text.delete(1.0, tk.END)  # Xóa nội dung cũ
     output_text.insert(tk.END, str(data))  # Chèn kết quả mới
 
 
-#####################################################
-# Tạo cửa sổ chính
+# Loading wrapper
+def run_with_loading(task_func):
+    def wrapper():
+        output_text.delete('1.0', tk.END)
+        output_text.insert(tk.END, "Processing...")
+
+        def thread_target():
+            try:
+                task_func()
+            except Exception as e:
+                output_text.delete('1.0', tk.END)
+                output_text.insert(tk.END, f"Error: {e}")
+
+        threading.Thread(target=thread_target).start()
+
+    return wrapper
+
+
+# Create the main window
 root = tk.Tk()
 root.title("PQR Convert")
 root.geometry("900x600")
 
-# Định nghĩa font với kích thước lớn hơn (vd: 12)
+# Font size
 custom_font = ('Consolas', 11)
 
 # Main container
 main_frame = ttk.Frame(root)
 main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-# Phần TRÁI (Input/Output)
+# ================= Left side ================= #
 left_frame = ttk.Frame(main_frame)
 left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-# Frame cho variables
 variables_frame = ttk.Frame(left_frame)
 variables_frame.pack(fill=tk.X, pady=(0, 10))
 
-# Dòng 1: Label + Tooltip
+# Label + Tooltip
 var_label_frame = ttk.Frame(variables_frame)
 var_label_frame.pack(fill=tk.X)
 ttk.Label(var_label_frame, text="Variables:").pack(side=tk.LEFT)
@@ -74,20 +123,18 @@ ttk.Label(var_label_frame, text="Variables:").pack(side=tk.LEFT)
 # Tooltip
 tooltip_label = ttk.Label(var_label_frame, text="(?)", foreground="blue")
 tooltip_label.pack(side=tk.LEFT, padx=(5, 0))
-ToolTip(tooltip_label,
-        text="If there are multiple variables, enter the base variables separated by commas.\nFor example: a,b,c")
+ToolTip(tooltip_label, text="If the polynomial to be converted is f(a,b,c), then please input a,b,c.")
 
-# Dòng 2: Ô nhập - Thêm font size
+# Input variables
 input_vars = ttk.Entry(variables_frame, font=custom_font)
 input_vars.pack(fill=tk.X)
-input_vars.insert(0, 'a,b,c')
+input_vars.insert(0, 'a,b,c')  # Default example variables
 
-# Ô nhập đa thức - Thêm font size
+# Input expression
 ttk.Label(left_frame, text="Input:").pack(anchor=tk.W)
 input_poly = scrolledtext.ScrolledText(left_frame, height=8, wrap=tk.WORD, font=custom_font)
 input_poly.pack(fill=tk.BOTH, expand=True, pady=5)
-# input_poly.insert(tk.END, '(a^2 + b^2 + c^2)^2 - k*(a^3*b + b^3*c + c^3*a)')
-input_poly.insert(tk.END, 'a/b+b/c+c/a-k*(a+b+c)')
+input_poly.insert(tk.END, '(a^2 + b^2 + c^2)^2 - k*(a^3*b + b^3*c + c^3*a)')
 
 # Ô kết quả - Thêm font size
 ttk.Label(left_frame, text="Output:").pack(anchor=tk.W)
@@ -98,19 +145,20 @@ output_text.pack(fill=tk.BOTH, expand=True)
 separator = ttk.Separator(main_frame, orient=tk.VERTICAL)
 separator.pack(side=tk.LEFT, fill=tk.Y, padx=10)
 
-# Phần PHẢI (các nút chức năng)
+# ================= Right side ================= #
 right_frame = ttk.Frame(main_frame, width=120)
 right_frame.pack(side=tk.LEFT, fill=tk.Y)
 
 
-# Các nút chức năng (tạm thời dùng hàm giả định)
-def dummy_command():
-    print("Button clicked")
+# Clear input
+def clear_input():
+    input_poly.delete('1.0', tk.END)
 
 
 buttons = [
-    ("pqr", btn_pqr),
-    ("uvw", btn_uvw)
+    ("pqr", run_with_loading(btn_pqr)),
+    ("uvw", run_with_loading(btn_uvw)),
+    ("Clear input", clear_input)
 ]
 
 for text, cmd in buttons:
@@ -124,36 +172,28 @@ for text, cmd in buttons:
     btn.pack(pady=8, ipady=5)
 
 
-# Thêm thông tin tác giả ở dưới cùng, bên phải
-# author_label = ttk.Label(right_frame, text="@nguyenhuyenag", font=('Consolas', 10))
-# author_label.pack(side=tk.BOTTOM, pady=(10, 0))
-
-# Thêm thông tin tác giả dưới ô Output
-# author_label = ttk.Label(left_frame, text="@nguyenhuyenag", font=('Consolas', 10), anchor='e')
-# author_label.pack(fill=tk.X, pady=(5, 0))
-
-# Thêm thông tin tác giả dưới ô Output (canh trái)
-# author_label = ttk.Label(left_frame, text="@nguyenhuyenag", font=('Consolas', 10), anchor='w', cursor="hand2")
-# author_label.pack(fill=tk.X, pady=(5, 0))
-
-# Hàm mở URL
+# Open author link
 def open_author_link(event):
     webbrowser.open_new("https://nguyenhuyenag.wordpress.com/")
 
 
-# Label có thể click mở link
+# Author label
 author_label = ttk.Label(
     left_frame,
     text="@nguyenhuyenag",
     font=('Consolas', 10),
     anchor='w',
     cursor="hand2",
-    foreground="blue"  # Tùy chọn: để giống hyperlink
+    foreground="blue"
 )
 author_label.pack(fill=tk.X, pady=(5, 0))
 
-# Gắn sự kiện click chuột trái
+# Asssign click event to author label
 author_label.bind("<Button-1>", open_author_link)
+
+# Time execution
+time_label = ttk.Label(right_frame, text="⏱ Time: --", font=('Consolas', 10))
+time_label.pack(pady=(20, 0))
 
 if __name__ == "__main__":
     root.mainloop()

@@ -48,14 +48,14 @@ def generate_polynomial(monomial_list: List[Expr], coeff_name: str = 'm') -> Tup
     """
     global _coeff_counter
 
-    idx = IndexedBase(coeff_name)
+    c_name = IndexedBase(coeff_name)
 
     poly = S.Zero
     pvars = set()
     coeffs = []
 
     for mono in monomial_list:
-        coeff = idx[_coeff_counter]
+        coeff = c_name[_coeff_counter]
         poly += coeff * mono
         coeffs.append(coeff)
         pvars.union(mono.free_symbols)
