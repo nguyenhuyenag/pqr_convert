@@ -1,5 +1,7 @@
 # PQR Convert
 
+[Download](https://github.com/nguyenhuyenag/pqr_convert/releases/)
+
 ## Giới thiệu
 PQR Convert giúp chuyển đổi một biểu thức bất kỳ $f(a, b, c)$ sang:
 - $f(p, q, r),$ với $p = a + b + c, \ q = ab + bc + ca, \ r = abc.$
