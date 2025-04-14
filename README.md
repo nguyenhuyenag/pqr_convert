@@ -2,8 +2,8 @@
 
 ## Giới thiệu
 PQR Convert giúp chuyển đổi một biểu thức bất kỳ $f(a, b, c)$ sang:
-1. $f(p, q, r),$ với: $p = a + b + c, \, q = ab + bc + ca, \ r = abc.$
-2. $f(u, v, w),$ với: $3u = a + b + c, \, 3u^2 = ab + bc + ca, \ w^3 = abc.$
+1. $f(p, q, r),$ với: $p = a + b + c, \ q = ab + bc + ca, \ r = abc.$
+2. $f(u, v, w),$ với: $3u = a + b + c, \ 3u^2 = ab + bc + ca, \ w^3 = abc.$
 
 ## Hướng dẫn sử dụng
 1. **Phép toán nhân**: Được biểu thị bằng dấu `*`.  
