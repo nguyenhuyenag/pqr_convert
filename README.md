@@ -1,10 +1,7 @@
 # PQR Convert
 
 ## Giới thiệu
-PQR Convert là một chương trình giúp chuyển đổi một biểu thức bất kỳ \( f(a, b, c) \) sang \( f(p, q, r) \), với:
-- \( p = a + b + c \)
-- \( q = ab + bc + ca \)
-- \( r = abc \)
+PQR Convert là một chương trình giúp chuyển đổi một biểu thức bất kỳ $f(a, b, c)$ sang $f(p, q, r),$ với: $p = a + b + c, \, q = ab + bc + ca, \ r = abc.$
 
 ## Hướng dẫn sử dụng
 1. **Phép toán nhân**: Được biểu thị bằng dấu `*`.  
