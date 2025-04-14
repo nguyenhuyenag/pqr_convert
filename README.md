@@ -15,3 +15,6 @@ PQR Convert giúp chuyển đổi một biểu thức bất kỳ $f(a, b, c)$ sa
    Ví dụ: Biểu thức $a^2 + b^2 + c^2$ có thể được nhập dưới dạng `a^2 + b^2 + c^2` hoặc `a**2 + b**2 + c**2`.
 
 - Đảm bảo sử dụng đúng cú pháp khi nhập biểu thức.
+
+![Giao diện Form](https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/form.png?raw=true)
+
