@@ -1,5 +1,4 @@
-import sympy as sp
-from sympy import Poly
+from sympy import Poly, symbols
 
 from core.pqr import pqr
 from util import messages
@@ -11,7 +10,7 @@ def uvw(poly: Poly):
         return None, error_message
 
     try:
-        p, q, r, u, v, w = sp.symbols("p q r u v w")
+        p, q, r, u, v, w = symbols("p q r u v w")
         subs = {p: 3 * u, q: 3 * v ** 2, r: w ** 3}
         return result.subs(subs), None
     except Exception as e:

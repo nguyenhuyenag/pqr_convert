@@ -4,8 +4,8 @@ from sympy import Poly
 from util import messages
 
 
-def simplify_expression(expr):
-    return sp.simplify(expr)
+# def simplify_expression(expr):
+#     return sp.simplify(expr)
 
 
 def parse_symbols(str_vars):

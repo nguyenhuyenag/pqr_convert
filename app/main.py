@@ -5,10 +5,12 @@ import tkinter as tk
 import webbrowser
 from tkinter import ttk, scrolledtext
 
+from sympy import latex, simplify
+
 from core.pqr import pqr
 from core.uvw import uvw
 from util.tooltip import ToolTip
-from util.validation import parse_input, simplify_expression
+from util.validation import parse_input
 
 
 # Get data from the Variables box
@@ -19,6 +21,26 @@ def get_variables():
 # Get data from the Input box
 def get_polynomial():
     return input_poly.get(1.0, tk.END).strip() or ''
+
+
+# Output setter
+def set_output(data):
+    output_text.delete(1.0, tk.END)
+    # print('Value:', format_as_latex.get())
+    if format_as_latex.get():
+        output_text.insert(tk.END, latex(data))
+    else:
+        output_text.insert(tk.END, str(data))
+
+
+# Clear input
+def clear_input():
+    input_poly.delete('1.0', tk.END)
+
+
+# Open author link
+def open_author_link(event):
+    webbrowser.open_new("https://nguyenhuyenag.wordpress.com/")
 
 
 # Run multiple threads
@@ -54,7 +76,7 @@ def handle_btn_click(func):
             time_label.config(text="⏱ Time: --")
             return
 
-        res = simplify_expression(numer.as_expr() / denom.as_expr())
+        res = simplify(numer.as_expr() / denom.as_expr())
         set_output(res)
 
         elapsed_time = time.time() - start_time
@@ -70,12 +92,6 @@ def btn_pqr():
 
 def btn_uvw():
     handle_btn_click(uvw)
-
-
-# Output setter
-def set_output(data):
-    output_text.delete(1.0, tk.END)  # Xóa nội dung cũ
-    output_text.insert(tk.END, str(data))  # Chèn kết quả mới
 
 
 # Loading wrapper
@@ -137,7 +153,26 @@ input_poly.pack(fill=tk.BOTH, expand=True, pady=5)
 input_poly.insert(tk.END, '(a^2 + b^2 + c^2)^2 - k*(a^3*b + b^3*c + c^3*a)')
 
 # Ô kết quả - Thêm font size
-ttk.Label(left_frame, text="Output:").pack(anchor=tk.W)
+# Frame chứa label Output và checkbox LaTeX
+output_label_frame = ttk.Frame(left_frame)
+output_label_frame.pack(fill=tk.X, pady=(0, 5))
+
+# Label Output
+ttk.Label(output_label_frame, text="Output:").pack(side=tk.LEFT)
+
+# This should come BEFORE creating the checkbox
+format_as_latex = tk.BooleanVar(value=True)  # Default: True
+
+# Then create your checkbox
+latex_checkbox = ttk.Checkbutton(
+    output_label_frame,
+    text="Format as LaTeX",
+    variable=format_as_latex,
+    cursor="hand2"
+)
+latex_checkbox.pack(side=tk.RIGHT)
+
+# Output text box
 output_text = scrolledtext.ScrolledText(left_frame, height=8, wrap=tk.WORD, font=custom_font)
 output_text.pack(fill=tk.BOTH, expand=True)
 
@@ -148,12 +183,6 @@ separator.pack(side=tk.LEFT, fill=tk.Y, padx=10)
 # ================= Right side ================= #
 right_frame = ttk.Frame(main_frame, width=120)
 right_frame.pack(side=tk.LEFT, fill=tk.Y)
-
-
-# Clear input
-def clear_input():
-    input_poly.delete('1.0', tk.END)
-
 
 buttons = [
     ("pqr", run_with_loading(btn_pqr)),
@@ -170,12 +199,6 @@ for text, cmd in buttons:
         cursor="hand2"
     )
     btn.pack(pady=8, ipady=5)
-
-
-# Open author link
-def open_author_link(event):
-    webbrowser.open_new("https://nguyenhuyenag.wordpress.com/")
-
 
 # Author label
 author_label = ttk.Label(

@@ -1,19 +1,21 @@
 from typing import List
 
-import sympy as sp
-from sympy import Symbol, Poly, S
-from sympy import symbols as sp_symbols
+from sympy import Symbol, Poly, S, symbols, solve, simplify
 
 from core.polynomial import poly_zero, monomials, generate_polynomial
 from util import messages
 
+pools_monomials = {}
 
-# Degree of pqr expression:
-# [p = a + b + c, q = a*b + b*c + c*a, r = a*b*c]
-# degree p = 1, degree q = 2, degree r = 3
-# Total degree of pqr = degree of p + 2 * degree of q + 3 * degree of r
+
 def degree_of_pqr(pqr_expr) -> int:
-    p, q, r = sp_symbols("p q r")
+    """
+        Degree of pqr expression:
+        [p = a + b + c, q = a*b + b*c + c*a, r = a*b*c]
+        degree p = 1, degree q = 2, degree r = 3
+        Total degree of pqr = degree of p + 2 * degree of q + 3 * degree of r
+    """
+    p, q, r = symbols("p q r")
     # Chuyển biểu thức về dạng đa thức theo p, q, r
     poly = Poly(pqr_expr, p, q, r)
     # poly.gens = (p, q, r)
@@ -22,12 +24,20 @@ def degree_of_pqr(pqr_expr) -> int:
     return max(degrees) if degrees else 0
 
 
-# Sinh ra đa thức core và biến số [m1,m2,...]
-# [p = a + b + c, q = a*b + b*c + c*a, r = a*b*c]
 def pqr_polynomial(degree: int, coeff_name: str):
-    monomial_list = monomials(['p', 'q', 'r'], degree)
-    # Filter the monomials that are degree_item <= degree
-    monomial_list = [x for x in monomial_list if degree_of_pqr(x) <= degree]
+    """
+        Sinh đa thức pqr
+    """
+    key = degree  # Chỉ dùng degree vì biến luôn là ['p', 'q', 'r']
+
+    # Nếu đã có monomials cho degree này thì lấy ra, chưa có thì tạo và lưu vào pool
+    if key in pools_monomials:
+        monomial_list = pools_monomials[key]
+    else:
+        monomial_list = monomials(['p', 'q', 'r'], degree)
+        monomial_list = [x for x in monomial_list if degree_of_pqr(x) <= degree]
+        pools_monomials[key] = monomial_list
+
     return generate_polynomial(monomial_list, coeff_name)
 
 
@@ -36,8 +46,8 @@ def generate_pqr_cyclic(x1: Symbol, x2: Symbol, x3: Symbol, degree: int, coeff_n
     f1 = pqr_polynomial(degree, coeff_name)
     f2 = pqr_polynomial(degree - 3, coeff_name) if degree >= 3 else S.Zero
     # Extract coefficients
-    p, q, r = sp.symbols("p q r")
-    coeffs = (f1.free_symbols | f2.free_symbols) - {x1, x2, x3, p, q, r, sp.symbols(coeff_name)}
+    p, q, r = symbols("p q r")
+    coeffs = (f1.free_symbols | f2.free_symbols) - {x1, x2, x3, p, q, r, symbols(coeff_name)}
     # Create cyclic term
     f_cyclic = (x1 - x2) * (x2 - x3) * (x3 - x1)
     # Combine expressions
@@ -47,13 +57,13 @@ def generate_pqr_cyclic(x1: Symbol, x2: Symbol, x3: Symbol, degree: int, coeff_n
 
 def pqr(poly: Poly):
     pvars = poly.gens
-    
+
     if len(pvars) != 3:
         return None, messages.expression_variable_count_error
 
     try:
         a, b, c = pvars
-        p, q, r = sp.symbols("p q r")
+        p, q, r = symbols("p q r")
         coeff_name = 'm'
 
         # Substitution rules for symmetric polynomials
@@ -67,7 +77,7 @@ def pqr(poly: Poly):
 
         # Solve for coefficients
         eqs = poly_zero(poly_template - poly)
-        root = sp.solve(eqs, coeffs)
+        root = solve(eqs, coeffs)
         if not root:
             return None, messages.conversion_error
 
@@ -79,8 +89,8 @@ def pqr(poly: Poly):
         return None, messages.conversion_error
 
 
-def pqr_from_expr(expr: str, symbols: List[str]):
-    expr = sp.simplify(expr)
-    symbols = sp_symbols(symbols)
-    poly = Poly(expr, symbols)
+def pqr_from_expr(expr: str, pvars: List[str]):
+    expr = simplify(expr)
+    all_vars = symbols(pvars)
+    poly = Poly(expr, all_vars)
     return pqr(poly)
