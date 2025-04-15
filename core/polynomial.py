@@ -1,39 +1,38 @@
 from itertools import combinations_with_replacement
 from typing import List, Union, Set, Tuple
 
-import sympy as sp
-from sympy import Poly, Expr, S, Mul, Symbol, IndexedBase
+# import sympy as sp
+from sympy import Poly, Expr, S, Mul, Symbol, IndexedBase, symbols
 
-_coeff_counter = 1
+_coeff_index_ = 1
 """A global counter used to assign unique indices to coefficients."""
 
 
-def monomials(symbols: Union[List[str], List[Symbol]], degree: int, is_homogeneous: bool = False) -> List[Expr]:
+def monomials(variables: Union[List[str], List[Symbol]], degree: int, is_homogeneous: bool = False) -> List[Expr]:
     """
         Generate a list of monomials up to a given total degree using specified variables.
 
         Example:
         > monomials(['a', 'b', 'c'], 2)
 
-            [1, a*b, a**2, a*c, a, b**2, b*c, c**2, c, b]
+            [1, a, b, c, a*b, a**2, a*c, b**2, b*c, c**2]
 
         > monomials(['a', 'b', 'c'], 2, is_homogeneous=True)
 
             [a*b, b**2, c**2, b*c, a**2, a*c]
     """
-    symbols = [sp.symbols(x) if isinstance(x, str) else x for x in symbols]
-
-    monomial_list = set() if is_homogeneous else {S.One}
+    result = set() if is_homogeneous else {S.One}
+    variables = [symbols(x) if isinstance(x, str) else x for x in variables]
 
     for deg in range(1, 1 + degree):
-        for comb in combinations_with_replacement(symbols, deg):
+        for comb in combinations_with_replacement(variables, deg):
             term = Mul(*comb)
-            monomial_list.add(term)
+            result.add(term)
 
     if is_homogeneous:
-        return [x for x in monomial_list if degree == Poly(x, symbols).total_degree()]
+        return [x for x in result if degree == Poly(x, variables).total_degree()]
 
-    return list(monomial_list)
+    return list(result)
 
 
 def generate_polynomial(monomial_list: List[Expr], coeff_name: str = 'm') -> Tuple[Poly, List[Symbol]]:
@@ -44,22 +43,21 @@ def generate_polynomial(monomial_list: List[Expr], coeff_name: str = 'm') -> Tup
         > mons = monomials(['x', 'y'], 2)
         > poly = generate_polynomial(mons, 'm')
 
-            x**2*m[5] + x*y*m[2] + x*m[6] + y**2*m[3] + y*m[4] + m[1]
+            m[6]*x + m[5]*x**2 + m[4]*y + m[3]*y**2 + m[2]*x*y + m[1]
     """
-    global _coeff_counter
+    global _coeff_index_
 
-    c_name = IndexedBase(coeff_name)
-
+    coeffs = []
     poly = S.Zero
     pvars = set()
-    coeffs = []
+    cname = IndexedBase(coeff_name)
 
     for mono in monomial_list:
-        coeff = c_name[_coeff_counter]
+        coeff = cname[_coeff_index_]
         poly += coeff * mono
         coeffs.append(coeff)
         pvars.union(mono.free_symbols)
-        _coeff_counter += 1  # Tăng chỉ số
+        _coeff_index_ += 1
 
     return Poly(poly, *pvars)
 
