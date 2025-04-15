@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Math Icon Generator</title>
+    <style>
+        canvas {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="iconCanvas" width="32" height="32"></canvas>
+    <br>
+    <a id="downloadLink" download="math_icon.ico">Download ICO</a>
+
+    <script>
+        const canvas = document.getElementById('iconCanvas');
+        const ctx = canvas.getContext('2d');
+        const link = document.getElementById('downloadLink');
+
+        // Set background
+        const gradient = ctx.createLinearGradient(0, 0, 32, 32);
+        gradient.addColorStop(0, '#4a90e2');  // Light blue
+        gradient.addColorStop(1, '#2c3e50');  // Dark blue
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 32, 32);
+
+        // Draw "pqr" - centered and lowercase
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'italic bold 18px Times New Roman';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('pqr', 16, 16);  // Centered at 16,16
+
+        // Add some decorative dots
+        ctx.beginPath();
+        ctx.arc(6, 24, 1.5, 0, Math.PI * 2);
+        ctx.arc(26, 8, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffd700';  // Gold color
+        ctx.fill();
+
+        // Convert canvas to ICO format
+        const imageData = canvas.toDataURL('image/x-icon');
+        link.href = imageData;
+    </script>
+</body>
+</html>

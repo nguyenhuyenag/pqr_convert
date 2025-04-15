@@ -1,4 +1,6 @@
 import io
+import os
+import sys
 import threading
 import time
 import tkinter as tk
@@ -114,12 +116,28 @@ def btn_uvw():
     handle_btn_click(uvw)
 
 
+# Xác định thư mục gốc
+if getattr(sys, 'frozen', False):
+    # Khi chạy từ .exe đã đóng gói
+    base_path = sys._MEIPASS
+else:
+    # Khi chạy bằng Python bình thường
+    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+# Đường dẫn đầy đủ tới icon
+icon_path = os.path.join(base_path, 'resources', 'icon.png')
+
 #############################################
 # Create the main window
 #############################################
 root = tk.Tk()
 root.title("PQR Convert")
 root.geometry("900x700")
+
+# Set window icon
+icon_image = Image.open(icon_path)
+icon_photo = ImageTk.PhotoImage(icon_image)
+root.iconphoto(False, icon_photo)
 
 # Font size
 custom_font = ('Consolas', 11)
@@ -163,12 +181,14 @@ text_area_height = 3
 
 # Output: Raw Python code
 ttk.Label(left_frame, text="Raw").pack(anchor=tk.W)
-output_raw_text = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD, font=custom_font)  # Use variable for height
+output_raw_text = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD,
+                                            font=custom_font)  # Use variable for height
 output_raw_text.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX code
 ttk.Label(left_frame, text="TeX").pack(anchor=tk.W)
-output_latex_text = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD, font=custom_font)  # Use variable for height
+output_latex_text = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD,
+                                              font=custom_font)  # Use variable for height
 output_latex_text.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX image

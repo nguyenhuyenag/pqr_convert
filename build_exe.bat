@@ -33,9 +33,11 @@ python -m PyInstaller --onefile --windowed --name pqr_convert ^
   --collect-all sympy ^
   --collect-submodules matplotlib ^
   --collect-submodules PIL ^
+  --icon=..\resources\icon.png ^
+  --add-data "../resources/icon.png;resources" ^
   main.py
 
-:: Message
+:: Check error 
 if %errorlevel% equ 0 (
     echo.
     echo BUILD SUCCESS - pqr_convert.exe created in dist folder
@@ -45,6 +47,6 @@ if %errorlevel% equ 0 (
 )
 
 echo.
-echo Closing in 5 seconds...
+:: echo Closing in 10 seconds...
 timeout /t 5 /nobreak
 exit /b
