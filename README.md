@@ -8,6 +8,7 @@ Chương trình PQR Convert giúp chuyển đổi một biểu thức bất kỳ
 - $f(u, v, w),$ với $3u = a + b + c, \ 3u^2 = ab + bc + ca, \ w^3 = abc.$
 
 ## Lưu ý quan trọng
+- **Biến số**: Giả sử biểu thức là $f(a,b,c)$ thì `Variables` là `a,b,c`.
 - **Phép toán nhân**: Được biểu thị bằng dấu `*`.  
    Ví dụ: Biểu thức $ab + bc + ca$ sẽ được nhập dưới dạng `a*b + b*c + c*a`.
 
