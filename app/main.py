@@ -112,7 +112,9 @@ def run_with_loading(task_func):
     return wrapper
 
 
+#############################################
 # Create the main window
+#############################################
 root = tk.Tk()
 root.title("PQR Convert")
 root.geometry("900x600")
