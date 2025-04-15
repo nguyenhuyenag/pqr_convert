@@ -114,12 +114,6 @@ def btn_uvw():
     handle_btn_click(uvw)
 
 
-#
-# def open_author_link(event=None):
-#     import webbrowser
-#     webbrowser.open("https://github.com/nguyenhuyenag")
-
-
 #############################################
 # Create the main window
 #############################################
@@ -148,7 +142,7 @@ variables_frame.pack(fill=tk.X, pady=(0, 10))
 # Label for variables
 var_label_frame = ttk.Frame(variables_frame)
 var_label_frame.pack(fill=tk.X)
-ttk.Label(var_label_frame, text="Variables:").pack(side=tk.LEFT)
+ttk.Label(var_label_frame, text="Variables:", font=('Consolas', 12, 'bold')).pack(side=tk.LEFT)
 
 # Entry for Variables with placeholder
 input_vars = ttk.Entry(variables_frame, font=custom_font)
@@ -156,25 +150,29 @@ input_vars.pack(fill=tk.X)
 input_vars.insert(0, 'a,b,c')  # Default placeholder text
 
 # Input: Polynomial
-ttk.Label(left_frame, text="Input:").pack(anchor=tk.W)
+ttk.Label(left_frame, text="Input:", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
 input_poly = scrolledtext.ScrolledText(left_frame, height=4, wrap=tk.WORD, font=custom_font, undo=True)
 input_poly.pack(fill=tk.BOTH, expand=False, pady=5)
 input_poly.insert(tk.END, '(a^2 + b^2 + c^2)^2 - k*(a^3*b + b^3*c + c^3*a)')
 
-same_height = 3
+# Label for Output above the output sections
+ttk.Label(left_frame, text="Output", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
+
+# Adjustable variable for text area height
+text_area_height = 3
 
 # Output: Raw Python code
-ttk.Label(left_frame, text="Raw Python code:").pack(anchor=tk.W)
-output_raw_text = scrolledtext.ScrolledText(left_frame, height=same_height, wrap=tk.WORD, font=custom_font)
+ttk.Label(left_frame, text="Raw").pack(anchor=tk.W)
+output_raw_text = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD, font=custom_font)  # Use variable for height
 output_raw_text.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX code
-ttk.Label(left_frame, text="LaTeX code:").pack(anchor=tk.W)
-output_latex_text = scrolledtext.ScrolledText(left_frame, height=same_height, wrap=tk.WORD, font=custom_font)
+ttk.Label(left_frame, text="TeX").pack(anchor=tk.W)
+output_latex_text = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD, font=custom_font)  # Use variable for height
 output_latex_text.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX image
-ttk.Label(left_frame, text="LaTeX display:").pack(anchor=tk.W)
+ttk.Label(left_frame, text="LaTeX").pack(anchor=tk.W)
 output_canvas = tk.Label(left_frame, background="white", height=120)
 output_canvas.pack(fill=tk.BOTH, expand=False, padx=5, pady=5)
 
@@ -207,9 +205,12 @@ for text, cmd in buttons:
     )
     btn.pack(pady=8, ipady=5)
 
+# Định nghĩa một biến chung để điều chỉnh khoảng cách
+common_padding = 20  # Khoảng cách chung giữa time_label và author_label
+
 # Time label
 time_label = ttk.Label(right_frame, text="⏱ Time (s): --", font=('Consolas', 10))
-time_label.pack(pady=(5, 10))
+time_label.pack(pady=(common_padding, 5))  # Sử dụng common_padding cho khoảng cách phía trên
 
 # Author label just above the time label
 author_label = ttk.Label(
@@ -220,7 +221,7 @@ author_label = ttk.Label(
     cursor='hand2',
     foreground="blue"
 )
-author_label.pack(fill=tk.X, pady=(10, 5))
+author_label.pack(fill=tk.X, pady=(5, common_padding))  # Sử dụng common_padding cho khoảng cách phía dưới
 author_label.bind("<Button-1>", open_author_link)
 
 #############################################
