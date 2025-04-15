@@ -174,7 +174,7 @@ input_poly.pack(fill=tk.BOTH, expand=False, pady=5)
 input_poly.insert(tk.END, '(a^2 + b^2 + c^2)^2 - k*(a^3*b + b^3*c + c^3*a)')
 
 # Label for Output above the output sections
-ttk.Label(left_frame, text="Output", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
+ttk.Label(left_frame, text="Output:", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
 
 # Adjustable variable for text area height
 text_area_height = 3
