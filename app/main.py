@@ -132,15 +132,15 @@ icon_path = os.path.join(base_path, 'resources', 'icon.png')
 #############################################
 root = tk.Tk()
 root.title("PQR Convert")
-root.geometry("900x700")
+root.geometry("1300x700")
 
-# Set window icon
+# Set icon
 icon_image = Image.open(icon_path)
 icon_photo = ImageTk.PhotoImage(icon_image)
 root.iconphoto(False, icon_photo)
 
 # Font size
-custom_font = ('Consolas', 11)
+# custom_font = ('Consolas', 11)
 
 # Main container
 main_frame = ttk.Frame(root)
@@ -163,13 +163,13 @@ var_label_frame.pack(fill=tk.X)
 ttk.Label(var_label_frame, text="Variables:", font=('Consolas', 12, 'bold')).pack(side=tk.LEFT)
 
 # Entry for Variables with placeholder
-input_vars = ttk.Entry(variables_frame, font=custom_font)
+input_vars = ttk.Entry(variables_frame, font=('Consolas', 11))
 input_vars.pack(fill=tk.X)
 input_vars.insert(0, 'a,b,c')  # Default placeholder text
 
 # Input: Polynomial
 ttk.Label(left_frame, text="Input:", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
-input_poly = scrolledtext.ScrolledText(left_frame, height=4, wrap=tk.WORD, font=custom_font, undo=True)
+input_poly = scrolledtext.ScrolledText(left_frame, height=7, wrap=tk.WORD, font=('Consolas', 11), undo=True)
 input_poly.pack(fill=tk.BOTH, expand=False, pady=5)
 input_poly.insert(tk.END, '(a^2 + b^2 + c^2)^2 - k*(a^3*b + b^3*c + c^3*a)')
 
@@ -182,13 +182,13 @@ text_area_height = 3
 # Output: Raw Python code
 ttk.Label(left_frame, text="Raw").pack(anchor=tk.W)
 output_raw_text = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD,
-                                            font=custom_font)  # Use variable for height
+                                            font=('Consolas', 11))  # Use variable for height
 output_raw_text.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX code
 ttk.Label(left_frame, text="TeX").pack(anchor=tk.W)
 output_latex_text = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD,
-                                              font=custom_font)  # Use variable for height
+                                              font=('Consolas', 11))  # Use variable for height
 output_latex_text.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX image
