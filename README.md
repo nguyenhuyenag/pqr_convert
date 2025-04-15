@@ -18,4 +18,4 @@ Chương trình PQR Convert giúp chuyển đổi một biểu thức bất kỳ
 
 ## Giao diện
 
-![Giao diện Form](https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/form.png?raw=true)
+![Giao diện Form](https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/screenshot.png?raw=true)
