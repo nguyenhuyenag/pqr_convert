@@ -14,7 +14,16 @@ from core.pqr import pqr
 from core.uvw import uvw
 from util.app_utils import open_author_link
 from util.multithreading import run_parallel_on_fraction
+from util.random import random_input
 from util.validation import parse_input
+
+# Xác định thư mục gốc
+if getattr(sys, 'frozen', False):
+    # For .exe
+    base_path = sys._MEIPASS
+else:
+    # For Python file
+    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 
 # Get data from the Variables box
@@ -29,8 +38,8 @@ def get_polynomial():
 
 # Output setter
 def set_output(data):
-    output_raw_text.delete(1.0, tk.END)
-    output_latex_text.delete(1.0, tk.END)
+    output_raw.delete(1.0, tk.END)
+    output_tex.delete(1.0, tk.END)
     output_canvas.config(image='')  # Remove the current image if any
     output_canvas.image = None
 
@@ -39,10 +48,10 @@ def set_output(data):
         latex_code = latex(data)
 
         # Raw code
-        output_raw_text.insert(tk.END, raw_code)
+        output_raw.insert(tk.END, raw_code)
 
         # LaTeX code
-        output_latex_text.insert(tk.END, latex_code)
+        output_tex.insert(tk.END, latex_code)
 
         # Render LaTeX image
         fig, ax = plt.subplots(figsize=(8, 1))
@@ -61,7 +70,7 @@ def set_output(data):
         output_canvas.image = photo
 
     except Exception as e:
-        output_raw_text.insert(tk.END, f"LaTeX rendering error:\n{e}")
+        output_raw.insert(tk.END, f"LaTeX rendering error:\n{e}")
 
 
 # Clear input
@@ -70,11 +79,11 @@ def clear_input():
 
 
 def handle_btn_click(func):
-    output_raw_text.delete('1.0', tk.END)
-    output_latex_text.delete('1.0', tk.END)
+    output_raw.delete('1.0', tk.END)
+    output_tex.delete('1.0', tk.END)
     output_canvas.config(image='')  # Remove the current image if any
     output_canvas.image = None
-    output_raw_text.insert(tk.END, "Processing...")
+    output_raw.insert(tk.END, "Processing...")
 
     ipoly = get_polynomial()
     ivars = get_variables()
@@ -84,26 +93,26 @@ def handle_btn_click(func):
 
         numer, denom, error_message = parse_input(ipoly, ivars)
         if error_message:
-            output_raw_text.delete('1.0', tk.END)
+            output_raw.delete('1.0', tk.END)
             set_output(error_message)
             time_label.config(text="⏱ Time (s): --")
             return
 
         numer, denom, error_message = run_parallel_on_fraction(func, numer, denom)
         if error_message:
-            output_raw_text.delete('1.0', tk.END)
+            output_raw.delete('1.0', tk.END)
             set_output(error_message)
             time_label.config(text="⏱ Time (s): --")
             return
 
         res = simplify(numer.as_expr() / denom.as_expr())
-        output_raw_text.delete('1.0', tk.END)
+        output_raw.delete('1.0', tk.END)
         set_output(res)
 
         elapsed_time = time.time() - start_time
         time_label.config(text=f"⏱ Time (s): {elapsed_time:.2f}")
     except Exception as e:
-        output_raw_text.delete('1.0', tk.END)
+        output_raw.delete('1.0', tk.END)
         set_output(f"Error: {e}")
         time_label.config(text="⏱ Time (s): --")
 
@@ -116,17 +125,6 @@ def btn_uvw():
     handle_btn_click(uvw)
 
 
-# Xác định thư mục gốc
-if getattr(sys, 'frozen', False):
-    # Khi chạy từ .exe đã đóng gói
-    base_path = sys._MEIPASS
-else:
-    # Khi chạy bằng Python bình thường
-    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-
-# Đường dẫn đầy đủ tới icon
-icon_path = os.path.join(base_path, 'resources', 'icon.png')
-
 #############################################
 # Create the main window
 #############################################
@@ -135,6 +133,7 @@ root.title("PQR Convert")
 root.geometry("1300x700")
 
 # Set icon
+icon_path = os.path.join(base_path, 'resources', 'icon.png')
 icon_image = Image.open(icon_path)
 icon_photo = ImageTk.PhotoImage(icon_image)
 root.iconphoto(False, icon_photo)
@@ -171,7 +170,7 @@ input_vars.insert(0, 'a,b,c')  # Default placeholder text
 ttk.Label(left_frame, text="Input:", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
 input_poly = scrolledtext.ScrolledText(left_frame, height=7, wrap=tk.WORD, font=('Consolas', 11), undo=True)
 input_poly.pack(fill=tk.BOTH, expand=False, pady=5)
-input_poly.insert(tk.END, '(a^2 + b^2 + c^2)^2 - k*(a^3*b + b^3*c + c^3*a)')
+input_poly.insert(tk.END, random_input())
 
 # Label for Output above the output sections
 ttk.Label(left_frame, text="Output:", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
@@ -181,15 +180,15 @@ text_area_height = 3
 
 # Output: Raw Python code
 ttk.Label(left_frame, text="Raw").pack(anchor=tk.W)
-output_raw_text = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD,
-                                            font=('Consolas', 11))  # Use variable for height
-output_raw_text.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
+output_raw = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD,
+                                       font=('Consolas', 11))  # Use variable for height
+output_raw.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX code
 ttk.Label(left_frame, text="TeX").pack(anchor=tk.W)
-output_latex_text = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD,
-                                              font=('Consolas', 11))  # Use variable for height
-output_latex_text.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
+output_tex = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD,
+                                       font=('Consolas', 11))  # Use variable for height
+output_tex.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX image
 ttk.Label(left_frame, text="LaTeX").pack(anchor=tk.W)
