@@ -6,7 +6,7 @@ where python >nul 2>&1
 if %errorlevel% neq 0 (
     echo ERROR: Python is not installed or not in PATH
     echo Please install Python from https://www.python.org/downloads/
-    timeout /t 10
+    timeout /t 5 /nobreak
     exit /b 1
 )
 
@@ -28,5 +28,5 @@ if %errorlevel% equ 0 (
 )
 
 echo Closing in 5 seconds...
-timeout /t 5 /nobreak >nul
+timeout /t 5 /nobreak
 exit
