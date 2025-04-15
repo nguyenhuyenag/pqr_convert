@@ -1,4 +1,3 @@
-import io
 import os
 import sys
 import threading
@@ -6,13 +5,13 @@ import time
 import tkinter as tk
 from tkinter import ttk, scrolledtext
 
-import matplotlib.pyplot as plt
 from PIL import Image, ImageTk
 from sympy import simplify, latex
 
 from core.pqr import pqr
 from core.uvw import uvw
 from util.app_utils import open_author_link
+from util.latex_utils import latex_to_img
 from util.multithreading import run_parallel_on_fraction
 from util.random import random_input
 from util.validation import parse_input
@@ -36,7 +35,6 @@ def get_polynomial():
     return input_poly.get(1.0, tk.END).strip() or ''
 
 
-# Output setter
 def set_output(data):
     output_raw.delete(1.0, tk.END)
     output_tex.delete(1.0, tk.END)
@@ -47,28 +45,20 @@ def set_output(data):
         raw_code = str(data)
         latex_code = latex(data)
 
-        # Raw code
+        # Insert raw code
         output_raw.insert(tk.END, raw_code)
 
-        # LaTeX code
+        # Insert TeX code
         output_tex.insert(tk.END, latex_code)
 
         # Render LaTeX image
-        fig, ax = plt.subplots(figsize=(8, 1))
-        ax.axis('off')
-        ax.text(0.5, 0.5, f"${latex_code}$", fontsize=14, ha='center', va='center')
+        photo = latex_to_img(latex_code)
 
-        buf = io.BytesIO()
-        plt.savefig(buf, format='png', bbox_inches='tight', pad_inches=0.1)
-        plt.close(fig)
-        buf.seek(0)
-
-        image = Image.open(buf)
-        image = image.resize((min(image.width, 780), image.height), Image.Resampling.LANCZOS)
-        photo = ImageTk.PhotoImage(image)
-        output_canvas.config(image=photo, height=120)
-        output_canvas.image = photo
-
+        if photo:  # Kiểm tra xem ảnh có được tạo thành công không
+            output_canvas.config(image=photo, height=120)
+            output_canvas.image = photo
+        else:
+            output_raw.insert(tk.END, "Error generating LaTeX image.")
     except Exception as e:
         output_raw.insert(tk.END, f"LaTeX rendering error:\n{e}")
 
@@ -175,18 +165,15 @@ input_poly.insert(tk.END, random_input())
 # Label for Output above the output sections
 ttk.Label(left_frame, text="Output:", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
 
-# Adjustable variable for text area height
-text_area_height = 3
-
 # Output: Raw Python code
 ttk.Label(left_frame, text="Raw").pack(anchor=tk.W)
-output_raw = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD,
+output_raw = scrolledtext.ScrolledText(left_frame, height=3, wrap=tk.WORD,
                                        font=('Consolas', 11))  # Use variable for height
 output_raw.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX code
 ttk.Label(left_frame, text="TeX").pack(anchor=tk.W)
-output_tex = scrolledtext.ScrolledText(left_frame, height=text_area_height, wrap=tk.WORD,
+output_tex = scrolledtext.ScrolledText(left_frame, height=5, wrap=tk.WORD,
                                        font=('Consolas', 11))  # Use variable for height
 output_tex.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
