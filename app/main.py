@@ -35,18 +35,21 @@ def get_polynomial():
     return input_poly.get(1.0, tk.END).strip() or ''
 
 
-def set_output(data):
+def set_output(data, error):
     output_raw.delete(1.0, tk.END)
     output_tex.delete(1.0, tk.END)
     output_canvas.config(image='')  # Remove the current image if any
     output_canvas.image = None
 
-    try:
-        raw_code = str(data)
-        latex_code = latex(data)
+    # Insert raw code
+    raw_code = str(data)
+    output_raw.insert(tk.END, raw_code)
 
-        # Insert raw code
-        output_raw.insert(tk.END, raw_code)
+    if error:
+        return  # Nếu có lỗi thì không in kết quả của output_raw và output_tex
+
+    try:
+        latex_code = latex(data)
 
         # Insert TeX code
         output_tex.insert(tk.END, latex_code)
@@ -84,26 +87,26 @@ def handle_btn_click(func):
         numer, denom, error_message = parse_input(ipoly, ivars)
         if error_message:
             output_raw.delete('1.0', tk.END)
-            set_output(error_message)
+            set_output(error_message, True)
             time_label.config(text="⏱ Time (s): --")
             return
 
         numer, denom, error_message = run_parallel_on_fraction(func, numer, denom)
         if error_message:
             output_raw.delete('1.0', tk.END)
-            set_output(error_message)
+            set_output(error_message, True)
             time_label.config(text="⏱ Time (s): --")
             return
 
         res = simplify(numer.as_expr() / denom.as_expr())
         output_raw.delete('1.0', tk.END)
-        set_output(res)
+        set_output(res, False)
 
         elapsed_time = time.time() - start_time
         time_label.config(text=f"⏱ Time (s): {elapsed_time:.2f}")
     except Exception as e:
         output_raw.delete('1.0', tk.END)
-        set_output(f"Error: {e}")
+        set_output(f"Error: {e}", True)
         time_label.config(text="⏱ Time (s): --")
 
 
