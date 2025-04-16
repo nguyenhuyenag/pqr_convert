@@ -10,6 +10,7 @@ from sympy import simplify, latex
 
 from core.pqr import pqr
 from core.uvw import uvw
+from util import messages
 from util.latex_utils import latex_to_img
 from util.multithreading import run_parallel_on_fraction
 from util.poly_utils import handle_factor, handle_expand, handle_discriminant, handle_collect
@@ -159,6 +160,28 @@ def btn_group_by():
     set_output(result if result else error, result is None)
 
 
+def build_button():
+    buttons = [
+        ("pqr", btn_pqr),
+        ("uvw", btn_uvw),
+        ("factor", btn_factor),
+        ("expand", btn_expand),
+        ("discriminant", btn_discriminant),
+        ("group by ", btn_group_by),
+        ("clear input", clear_input)
+    ]
+
+    for text, cmd in buttons:
+        btn = ttk.Button(
+            right_frame,
+            text=text,
+            width=20,
+            command=lambda c=cmd: threading.Thread(target=c).start(),
+            cursor="hand2"
+        )
+        btn.pack(pady=8, ipady=5)
+
+
 #############################################
 # Create the main window
 #############################################
@@ -240,28 +263,21 @@ right_frame = ttk.Frame(main_frame, width=500)
 right_frame.grid(row=0, column=2, sticky="ns")
 main_frame.grid_columnconfigure(2, weight=0)
 
-buttons = [
-    ("pqr", btn_pqr),
-    ("uvw", btn_uvw),
-    ("factor", btn_factor),
-    ("expand", btn_expand),
-    ("discriminant", btn_discriminant),
-    ("group by ", btn_group_by),
-    ("clear input", clear_input)
-]
-
-for text, cmd in buttons:
-    btn = ttk.Button(
-        right_frame,
-        text=text,
-        width=20,
-        command=lambda c=cmd: threading.Thread(target=c).start(),
-        cursor="hand2"
-    )
-    btn.pack(pady=8, ipady=5)
-
 # Định nghĩa một biến chung để điều chỉnh khoảng cách
 common_padding = 20  # Khoảng cách chung giữa time_label và author_label
+
+# Version label placed above the buttons
+version_label = ttk.Label(
+    right_frame,
+    text=f"Build: {messages.version}",
+    font=('Consolas', 10),
+    anchor='center',
+    foreground="gray"
+)
+version_label.pack(fill=tk.X, pady=(5, common_padding))  # Đặt trên các button
+
+# Add buttons
+build_button()
 
 # Time label
 time_label = ttk.Label(right_frame, text="⏱ Time (s): --", font=('Consolas', 10))
@@ -273,10 +289,10 @@ author_label = ttk.Label(
     text="@nguyenhuyenag",
     font=('Consolas', 10),
     anchor='center',
+    foreground="blue",
     cursor='hand2',
-    foreground="blue"
 )
-author_label.pack(fill=tk.X, pady=(5, common_padding))  # Sử dụng common_padding cho khoảng cách phía dưới
+author_label.pack(side=tk.BOTTOM, fill=tk.X, pady=(5, common_padding))  # Đặt dưới cùng
 author_label.bind("<Button-1>", open_author_link)
 
 #############################################
