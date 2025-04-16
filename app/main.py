@@ -243,11 +243,11 @@ main_frame.grid_columnconfigure(2, weight=0)
 buttons = [
     ("pqr", btn_pqr),
     ("uvw", btn_uvw),
-    ("Factor", btn_factor),
-    ("Expand", btn_expand),
-    ("Discriminant", btn_discriminant),
-    ("Broup By ", btn_group_by),
-    ("Clear input", clear_input)
+    ("factor", btn_factor),
+    ("expand", btn_expand),
+    ("discriminant", btn_discriminant),
+    ("group by ", btn_group_by),
+    ("clear input", clear_input)
 ]
 
 for text, cmd in buttons:
