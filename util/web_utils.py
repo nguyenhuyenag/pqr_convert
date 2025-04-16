@@ -1,4 +1,3 @@
-# Open author link
 import webbrowser
 
 

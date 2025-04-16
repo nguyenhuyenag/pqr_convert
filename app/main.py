@@ -10,11 +10,12 @@ from sympy import simplify, latex
 
 from core.pqr import pqr
 from core.uvw import uvw
-from util.app_utils import open_author_link
 from util.latex_utils import latex_to_img
 from util.multithreading import run_parallel_on_fraction
+from util.poly_utils import handle_factor, handle_expand, handle_discriminant, handle_collect
 from util.random import random_input
-from util.validation import parse_input
+from util.validation import parse_input_for_pqr
+from util.web_utils import open_author_link
 
 # Xác định thư mục gốc
 if getattr(sys, 'frozen', False):
@@ -31,7 +32,7 @@ def get_variables():
 
 
 # Get data from the Input box
-def get_polynomial():
+def get_input():
     return input_poly.get(1.0, tk.END).strip() or ''
 
 
@@ -71,20 +72,28 @@ def clear_input():
     input_poly.delete('1.0', tk.END)
 
 
-def handle_btn_click(func):
+def clear_output():
     output_raw.delete('1.0', tk.END)
     output_tex.delete('1.0', tk.END)
     output_canvas.config(image='')  # Remove the current image if any
-    output_canvas.image = None
+
+
+def processing():
     output_raw.insert(tk.END, "Processing...")
 
-    ipoly = get_polynomial()
+
+def handle_btn_click(func):
+    clear_output()
+    output_canvas.image = None
+    processing()
+
+    ipoly = get_input()
     ivars = get_variables()
 
     try:
         start_time = time.time()
 
-        numer, denom, error_message = parse_input(ipoly, ivars)
+        numer, denom, error_message = parse_input_for_pqr(ipoly, ivars)
         if error_message:
             output_raw.delete('1.0', tk.END)
             set_output(error_message, True)
@@ -116,6 +125,38 @@ def btn_pqr():
 
 def btn_uvw():
     handle_btn_click(uvw)
+
+
+def btn_factor():
+    clear_output()
+    processing()
+
+    result, error = handle_factor(get_input())
+    set_output(error or result, bool(error))
+
+
+def btn_expand():
+    clear_output()
+    processing()
+
+    result, error = handle_expand(get_input())
+    set_output(error or result, bool(error))
+
+
+def btn_discriminant():
+    clear_output()
+    processing()
+
+    result, error = handle_discriminant(get_input(), get_variables())
+    set_output(error or result, bool(error))
+
+
+def btn_group_by():
+    clear_output()
+    processing()
+
+    result, error = handle_collect(get_input(), get_variables())
+    set_output(result if result else error, result is None)
 
 
 #############################################
@@ -164,6 +205,7 @@ ttk.Label(left_frame, text="Input:", font=('Consolas', 12, 'bold')).pack(anchor=
 input_poly = scrolledtext.ScrolledText(left_frame, height=7, wrap=tk.WORD, font=('Consolas', 11), undo=True)
 input_poly.pack(fill=tk.BOTH, expand=False, pady=5)
 input_poly.insert(tk.END, random_input())
+# input_poly.insert(tk.END, 'a^3+b^3+c^3-3*a*b*c+a^2*b+a^2*c')  # Default placeholder text
 
 # Label for Output above the output sections
 ttk.Label(left_frame, text="Output:", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
@@ -201,6 +243,10 @@ main_frame.grid_columnconfigure(2, weight=0)
 buttons = [
     ("pqr", btn_pqr),
     ("uvw", btn_uvw),
+    ("Factor", btn_factor),
+    ("Expand", btn_expand),
+    ("Discriminant", btn_discriminant),
+    ("Broup By ", btn_group_by),
     ("Clear input", clear_input)
 ]
 
