@@ -13,7 +13,7 @@
 - Tính biệt thức ([discriminant](https://en.wikipedia.org/wiki/Discriminant)) của đa thức.
   + Ví dụ: Biệt thức của $(x) = ax^2+bx+c$ là $\Delta_{x}=b^2 - 4ac.$
 - Nhóm đa thức theo biến.
-   + Ví dụ: $a^2 + b^2 + c^2 + ab + ac + bc$ sẽ được nhóm lại theo $a$ như sau: $a^2 + a(b + c) + b^2 + bc + c^2$.
+   + Ví dụ: $a^2 + b^2 + c^2 + ab + bc + ca$ sẽ được nhóm lại theo $a$ như sau: $a^2 + a(b + c) + b^2 + bc + c^2$.
 
 ## Lưu ý quan trọng
 - **Biến số**: Giả sử biểu thức là $f(a,b,c)$ thì `Variables` là `a,b,c`.
