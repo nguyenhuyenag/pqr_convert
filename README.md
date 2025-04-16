@@ -4,10 +4,16 @@
 [![Download PQR Convert](https://custom-icon-badges.demolab.com/badge/-Download-blue?style=for-the-badge&logo=download&logoColor=white "Tải về PQR Convert")](https://github.com/nguyenhuyenag/pqr_convert/releases/)
 <!-- END LATEST DOWNLOAD BUTTON -->
 
-## Giới thiệu
-PQR Convert là chương trình giúp chuyển đổi biểu thức $f(a, b, c)$ (đối xứng, hoán vị) sang:
-- $f(p, q, r),$ với $p = a + b + c, \ q = ab + bc + ca, \ r = abc.$
-- $f(u, v, w),$ với $3u = a + b + c, \ 3u^2 = ab + bc + ca, \ w^3 = abc.$
+## Các tính năng chính
+- Chuyển đổi biểu thức $f(a, b, c)$ (đối xứng, hoán vị) sang:
+  + $f(p, q, r),$ với $p = a + b + c, \ q = ab + bc + ca, \ r = abc.$
+  + $f(u, v, w),$ với $3u = a + b + c, \ 3u^2 = ab + bc + ca, \ w^3 = abc.$
+- Phân tích biểu thức thành các nhân tử.
+- Khai triển biểu thức.
+- Tính biệt thức ([discriminant](https://en.wikipedia.org/wiki/Discriminant)) của đa thức.
+  + Ví dụ: Biệt thức của $(x) = ax^2+bx+c$ là $\Delta_{x}=b^2 - 4ac.$
+- Nhóm đa thức theo biến.
+   + Ví dụ: $a^2 + b^2 + c^2 + ab + ac + bc$ sẽ được nhóm lại thành $a^2 + a(b + c) + (b^2 + bc) + c^2$.
 
 ## Lưu ý quan trọng
 - **Biến số**: Giả sử biểu thức là $f(a,b,c)$ thì `Variables` là `a,b,c`.
@@ -16,8 +22,8 @@ PQR Convert là chương trình giúp chuyển đổi biểu thức $f(a, b, c)$
 
 - **Phép toán lũy thừa**: Được biểu thị bằng dấu `^` hoặc `**`.  
    Ví dụ: Biểu thức $a^2 + b^2 + c^2$ có thể được nhập dưới dạng `a^2 + b^2 + c^2` hoặc `a**2 + b**2 + c**2`.
-
-- Đảm bảo sử dụng đúng cú pháp khi nhập biểu thức.
+- **Phép toán chia**: Được biểu thị bằng dấu `/`.  
+   Ví dụ: Biểu thức $\frac{a^2 + b^2 + c^2}{abc}$ sẽ được nhập dưới dạng `(a^2 + b^2 + c^2) / (a*b*c)`.
 
 ## Giao diện
 
