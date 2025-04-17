@@ -2,7 +2,6 @@
     This module contains error messages for the expression module.
 """
 
-version = '17-04-2025'
 conversion_error = "Unable to convert."
 missing_input = "Please enter an input expression."
 invalid_input_error = "Invalid expression or variables."

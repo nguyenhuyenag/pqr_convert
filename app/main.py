@@ -10,7 +10,7 @@ from sympy import simplify, latex
 
 from core.pqr import pqr
 from core.uvw import uvw
-from util import messages
+from util import messages, config
 from util.latex_utils import latex_to_img
 from util.multithreading import run_parallel_on_fraction
 from util.poly_utils import handle_factor, handle_expand, handle_discriminant, handle_collect
@@ -44,6 +44,7 @@ def clear_output():
 
 
 def set_output(data, error):
+    clear_output()
     # Insert raw code
     raw_code = str(data)
     output_raw.insert(tk.END, raw_code)
@@ -270,7 +271,7 @@ common_padding = 20  # Khoảng cách chung giữa time_label và author_label
 # Version label placed above the buttons
 version_label = ttk.Label(
     right_frame,
-    text=f"Build: {messages.version}",
+    text=f"Build: {config.version}",
     font=('Consolas', 10),
     anchor='center',
     foreground="gray"
