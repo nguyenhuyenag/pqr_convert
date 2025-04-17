@@ -33,11 +33,11 @@
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/pqr.png'>
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/uvw.png'>
 
-- **expand**
+- **Expand**
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/expand.png'>
 
-- **discriminant**
+- **Discriminant**
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/discriminant.png'>
 
-- **collect**
+- **Collect**
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/collect.png'>
