@@ -19,10 +19,15 @@ from PIL import Image, ImageTk
 #     return ImageTk.PhotoImage(image)
 
 def latex_to_img(latex_code):
+    # plt.rcParams.update({
+    #     "text.usetex": True,
+    #     "font.family": "serif",
+    #     "text.latex.preamble": r"\usepackage{lmodern} \usepackage{amsmath}"
+    # })
     plt.rcParams.update({
-        "text.usetex": True,
-        "font.family": "serif",
-        "text.latex.preamble": r"\usepackage{lmodern} \usepackage{amsmath}"
+        "text.usetex": False,
+        "mathtext.fontset": "stix",  # hoặc "dejavusans"
+        "font.family": "STIXGeneral"
     })
 
     fig, ax = plt.subplots(figsize=(8, 2))
