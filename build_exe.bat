@@ -36,6 +36,8 @@ python -m PyInstaller --onedir --windowed --name pqr_convert ^
     --icon=..\resources\icon.png ^
     --add-data "../resources/icon.png;resources" ^
 	--noconfirm ^
+	--clean ^
+	--noupx ^
     main.py
 
 :: Check error 
