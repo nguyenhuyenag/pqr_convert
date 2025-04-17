@@ -36,6 +36,9 @@
 - **Expand**
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/expand.png'>
 
+- **Factor**
+<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/factor.png'>
+
 - **Discriminant**
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/discriminant.png'>
 
