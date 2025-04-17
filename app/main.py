@@ -166,8 +166,8 @@ def build_button():
     buttons = [
         ("pqr", btn_pqr),
         ("uvw", btn_uvw),
-        ("factor", btn_factor),
         ("expand", btn_expand),
+        ("factor", btn_factor),
         ("discriminant", btn_discriminant),
         ("collect ", btn_group_by),
         ("clear input", clear_input)
