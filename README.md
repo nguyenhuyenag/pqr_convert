@@ -31,23 +31,23 @@
 
 <p align="center">
   <figure style="display:inline-block; margin: 10px;">
-    <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/pqr.png" width="200"/>
+    <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/pqr.png"/>
     <figcaption align="center">Giải phương trình bậc 2 dạng p-q-r</figcaption>
   </figure>
   <figure style="display:inline-block; margin: 10px;">
-    <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/uvw.png" width="200"/>
+    <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/uvw.png"/>
     <figcaption align="center">Giải bằng công thức u-v-w</figcaption>
   </figure>
   <figure style="display:inline-block; margin: 10px;">
-    <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/expand.png" width="200"/>
+    <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/expand.png"/>
     <figcaption align="center">Khai triển biểu thức</figcaption>
   </figure>
   <figure style="display:inline-block; margin: 10px;">
-    <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/discriminant.png" width="200"/>
+    <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/discriminant.png"/>
     <figcaption align="center">Tính biệt thức Δ</figcaption>
   </figure>
   <figure style="display:inline-block; margin: 10px;">
-    <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/collect.png" width="200"/>
+    <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/collect.png"/>
     <figcaption align="center">Thu gọn biểu thức</figcaption>
   </figure>
 </p>
