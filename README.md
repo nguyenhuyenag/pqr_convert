@@ -27,4 +27,4 @@
 
 ## Giao diện
 
-![Giao diện Form](https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/screenshot.png?raw=true)
+![Giao diện Form](https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/pqr.png?raw=true)
