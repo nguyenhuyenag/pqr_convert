@@ -28,3 +28,10 @@
 ## Giao diện
 
 ![Giao diện Form](https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/pqr.png?raw=true)
+
+<p align="center">
+  <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/pqr.png"/>
+  <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/pqr.png"/>
+  <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/pqr.png"/>
+</p>
+
