@@ -30,6 +30,7 @@
 ## Giao diện
 
 <p align="center">
+- **pqr / uvw**
   <figure style="display:inline-block; margin: 10px;">
     <img src="https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/pqr.png"/>
     <figcaption align="center">Giải phương trình bậc 2 dạng p-q-r</figcaption>
