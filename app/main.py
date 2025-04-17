@@ -18,7 +18,6 @@ from util.random import random_input
 from util.validation import parse_input_for_pqr
 from util.web_utils import open_author_link
 
-# Xác định thư mục gốc
 if getattr(sys, 'frozen', False):
     # For .exe
     base_path = sys._MEIPASS
@@ -37,12 +36,14 @@ def get_input():
     return input_poly.get(1.0, tk.END).strip() or ''
 
 
-def set_output(data, error):
-    output_raw.delete(1.0, tk.END)
-    output_tex.delete(1.0, tk.END)
+def clear_output():
+    output_raw.delete('1.0', tk.END)
+    output_tex.delete('1.0', tk.END)
     output_canvas.config(image='')  # Remove the current image if any
     output_canvas.image = None
 
+
+def set_output(data, error):
     # Insert raw code
     raw_code = str(data)
     output_raw.insert(tk.END, raw_code)
@@ -59,8 +60,8 @@ def set_output(data, error):
         # Render LaTeX image
         photo = latex_to_img(latex_code)
 
-        if photo:  # Kiểm tra xem ảnh có được tạo thành công không
-            output_canvas.config(image=photo, height=120)
+        if photo:
+            output_canvas.config(image=photo)
             output_canvas.image = photo
         else:
             output_raw.insert(tk.END, "Error generating LaTeX image.")
@@ -73,10 +74,10 @@ def clear_input():
     input_poly.delete('1.0', tk.END)
 
 
-def clear_output():
-    output_raw.delete('1.0', tk.END)
-    output_tex.delete('1.0', tk.END)
-    output_canvas.config(image='')  # Remove the current image if any
+# def clear_output():
+#     output_raw.delete('1.0', tk.END)
+#     output_tex.delete('1.0', tk.END)
+#     output_canvas.config(image='')  # Remove the current image if any
 
 
 def processing():
@@ -167,7 +168,7 @@ def build_button():
         ("factor", btn_factor),
         ("expand", btn_expand),
         ("discriminant", btn_discriminant),
-        ("group by ", btn_group_by),
+        ("collect ", btn_group_by),
         ("clear input", clear_input)
     ]
 
@@ -247,8 +248,8 @@ output_tex.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX image
 ttk.Label(left_frame, text="LaTeX").pack(anchor=tk.W)
-output_canvas = tk.Label(left_frame, background="white", height=120)
-output_canvas.pack(fill=tk.BOTH, expand=False, padx=5, pady=5)
+output_canvas = tk.Label(left_frame, background="white")
+output_canvas.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 #############################################
 # SEPARATOR (Vertical line between left and right side)
