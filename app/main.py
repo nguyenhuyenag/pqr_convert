@@ -1,4 +1,3 @@
-import threading
 import time
 import tkinter as tk
 from tkinter import ttk, scrolledtext
@@ -26,6 +25,8 @@ WIDTH_FORM = 1300
 HEIGHT_FORM = 700
 
 LABEL_BOLD = ('Consolas', 11, 'bold')
+
+button_refs = []
 
 
 # Get data from the Variables box
@@ -163,6 +164,27 @@ def ctrl_a_select(event):
     return "break"
 
 
+def disable_all_buttons():
+    for btn in button_refs:
+        btn.config(state="disabled")
+
+
+def enable_all_buttons():
+    for btn in button_refs:
+        btn.config(state="normal")
+
+
+def wrap_command(original_command):
+    def wrapped():
+        disable_all_buttons()
+        try:
+            original_command()
+        finally:
+            enable_all_buttons()
+
+    return wrapped
+
+
 def build_button():
     buttons = [
         ("pqr", btn_pqr),
@@ -179,10 +201,12 @@ def build_button():
             right_frame,
             text=text,
             width=20,
-            command=lambda c=cmd: threading.Thread(target=c).start(),
+            # command=cmd,
+            command=wrap_command(cmd), # Disabling buttons while processing
             cursor="hand2"
         )
         btn.pack(pady=8, ipady=5)
+        button_refs.append(btn)
 
 
 #############################################
