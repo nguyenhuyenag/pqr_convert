@@ -8,7 +8,7 @@ from sympy import simplify, latex
 from core.pqr import pqr
 from core.uvw import uvw
 from util import config, messages
-from util.config import WIDTH_FORM, HEIGHT_FORM
+from util.config import TIME_DEFAULT
 from util.image_utils import latex_to_img, get_icon
 from util.multithreading import run_method_on_parallel
 from util.poly_utils import handle_factor, handle_expand, handle_discriminant, handle_collect
@@ -17,18 +17,15 @@ from util.validation import parse_input_for_pqr
 from util.web_utils import open_author_link
 
 COMMON_PADDING = 10
-RAW_OUTPUT_HEIGHT = 5
-TEX_OUTPUT_HEIGHT = 3
+
+HEIGHT_INPUT = 10
+HEIGHT_RAW_OUTPUT = 5
+HEIGHT_TEX_OUTPUT = 3
+
+WIDTH_FORM = 1300
+HEIGHT_FORM = 700
 
 LABEL_BOLD = ('Consolas', 11, 'bold')
-
-
-# if getattr(sys, 'frozen', False):
-#     base_path = sys._MEIPASS  # For .exe
-# else:
-#     # For project
-#     base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-#     # print(base_path)
 
 
 # Get data from the Variables box
@@ -51,6 +48,10 @@ def clear_output():
 # Clear input
 def clear_input():
     input_poly.delete('1.0', tk.END)
+
+
+def reset_time():
+    time_label.config(text=TIME_DEFAULT)
 
 
 def processing():
@@ -89,9 +90,6 @@ def handle_btn_click(method):
     clear_output()
     processing()
 
-    # ipoly = get_input()
-    # ivars = get_variables()
-
     start_time = time.time()
     try:
         numer, denom, error = parse_input_for_pqr(get_input(), get_variables())
@@ -111,7 +109,7 @@ def handle_btn_click(method):
         time_label.config(text=f"⏱ Time (s): {elapsed:.2f}")
     except Exception as e:
         set_output(f"Error: {e}", error=True)
-        time_label.config(text="⏱ Time (s): --")
+        reset_time()
 
 
 def btn_pqr():
@@ -123,6 +121,7 @@ def btn_uvw():
 
 
 def btn_factor():
+    reset_time()
     clear_output()
     processing()
 
@@ -131,6 +130,7 @@ def btn_factor():
 
 
 def btn_expand():
+    reset_time()
     clear_output()
     processing()
 
@@ -139,6 +139,7 @@ def btn_expand():
 
 
 def btn_discriminant():
+    reset_time()
     clear_output()
     processing()
 
@@ -147,11 +148,19 @@ def btn_discriminant():
 
 
 def btn_collect():
+    reset_time()
     clear_output()
     processing()
 
     result, error = handle_collect(get_input(), get_variables())
     set_output(error or result, bool(error))
+
+
+# Ctrl + A chỉ chọn phần từ đầu đến cuối phần có dữ liệu
+def ctrl_a_select(event):
+    event.widget.tag_remove("sel", "1.0", "end")
+    event.widget.tag_add("sel", "1.0", "end-1c")
+    return "break"
 
 
 def build_button():
@@ -215,7 +224,7 @@ input_vars.insert(0, 'a,b,c')
 
 # Input expression
 ttk.Label(left_frame, text="Expression / Polynomial:", font=LABEL_BOLD).pack(anchor=tk.W, pady=(2, 0), padx=5)
-input_poly = scrolledtext.ScrolledText(left_frame, height=7, wrap=tk.WORD, font=('Consolas', 11), undo=True)
+input_poly = scrolledtext.ScrolledText(left_frame, height=HEIGHT_INPUT, wrap=tk.WORD, font=('Consolas', 11), undo=True)
 input_poly.pack(fill=tk.BOTH, expand=False, pady=(2, 0), padx=5)
 input_poly.insert(tk.END, random_input())  # Default input
 
@@ -224,12 +233,12 @@ ttk.Label(left_frame, text="Output:", font=LABEL_BOLD).pack(anchor=tk.W, pady=5)
 
 # Output: Raw
 ttk.Label(left_frame, text="Raw").pack(anchor=tk.W)
-output_raw = scrolledtext.ScrolledText(left_frame, height=RAW_OUTPUT_HEIGHT, wrap=tk.WORD, font=('Consolas', 11))
+output_raw = scrolledtext.ScrolledText(left_frame, height=HEIGHT_RAW_OUTPUT, wrap=tk.WORD, font=('Consolas', 11))
 output_raw.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: TEX
 ttk.Label(left_frame, text="TeX").pack(anchor=tk.W)
-output_tex = scrolledtext.ScrolledText(left_frame, height=TEX_OUTPUT_HEIGHT, wrap=tk.WORD, font=('Consolas', 11))
+output_tex = scrolledtext.ScrolledText(left_frame, height=HEIGHT_TEX_OUTPUT, wrap=tk.WORD, font=('Consolas', 11))
 output_tex.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX
@@ -264,7 +273,7 @@ version_label.pack(fill=tk.X, pady=(5, COMMON_PADDING))
 build_button()
 
 # Time label
-time_label = ttk.Label(right_frame, text="⏱ Time (s): --", font=('Consolas', 10))
+time_label = ttk.Label(right_frame, text=TIME_DEFAULT, font=('Consolas', 10))
 time_label.pack(pady=(COMMON_PADDING, 5))
 
 # Author label
@@ -277,7 +286,17 @@ author_label = ttk.Label(
     cursor='hand2',
 )
 author_label.pack(side=tk.BOTTOM, fill=tk.X, pady=(5, COMMON_PADDING))
+
+# Bind click cho author_label
 author_label.bind("<Button-1>", open_author_link)
+
+# Danh sách các widget cần Ctrl + A
+text_widgets = [input_poly, output_raw, output_tex]
+
+# Bind Ctrl + A cho tất cả widget trong danh sách
+for widget in text_widgets:
+    widget.bind("<Control-a>", ctrl_a_select)
+    widget.bind("<Control-A>", ctrl_a_select)
 
 #############################################
 # MAIN LOOP
