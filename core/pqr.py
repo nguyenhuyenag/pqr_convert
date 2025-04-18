@@ -30,9 +30,8 @@ def degree_of_pqr(pqr_expr) -> int:
 
 def pqr_polynomial(degree: int, coeff_name: str):
     """
-        Sinh đa thức pqr
+        Generate a polynomial in p, q, r with total degree <= degree
     """
-    # Nếu đã có monomials cho degree này thì lấy ra, chưa có thì tạo và lưu vào pool
     if degree in monomials_pools:
         monomial_list = monomials_pools[degree]
     else:

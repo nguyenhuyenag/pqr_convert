@@ -4,24 +4,38 @@ from sympy import Poly
 from util import messages
 
 
+# def parse_vars(str_vars):
+#     variables = str_vars.split(",")
+#     variables = {v.strip() for v in variables if v.strip()}
+#     return {sp.symbols(v) for v in variables}
+
 def parse_vars(str_vars):
-    variables = str_vars.split(",")
-    variables = {v.strip() for v in variables if v.strip()}
-    return {sp.symbols(v) for v in variables}
+    return {sp.symbols(v.strip()) for v in str_vars.split(",") if v.strip()}
+
+
+def sympify_expression(input_expr: str):
+    return sp.sympify(input_expr)
 
 
 # Validate input and variables
 def parse_input_for_pqr(input_poly: str, input_vars: str):
+    """
+        Parse the input polynomial & variables for
+
+        Returns: numerator, denominator, error_message.
+    """
+    if not input_vars:
+        return None, None, messages.missing_variables
+
     if not input_poly:
         return None, None, messages.missing_input
 
     try:
-        expr = sp.sympify(input_poly)
         pvars = parse_vars(input_vars)
-
         if len(pvars) != 3:
-            return None, None, messages.invalid_variables_pqr
+            return None, None, messages.invalid_variables_pqr_uvw
 
+        expr = sympify_expression(input_poly)
         factor = sp.together(expr)
         numer, denom = factor.as_numer_denom()
         return Poly(numer, *pvars), Poly(denom, *pvars), None

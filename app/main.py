@@ -10,9 +10,9 @@ from sympy import simplify, latex
 
 from core.pqr import pqr
 from core.uvw import uvw
-from util import messages, config
+from util import config, messages
 from util.latex_utils import latex_to_img
-from util.multithreading import run_parallel_on_fraction
+from util.multithreading import run_method_on_parallel
 from util.poly_utils import handle_factor, handle_expand, handle_discriminant, handle_collect
 from util.random import random_input
 from util.validation import parse_input_for_pqr
@@ -39,12 +39,22 @@ def get_input():
 def clear_output():
     output_raw.delete('1.0', tk.END)
     output_tex.delete('1.0', tk.END)
-    output_canvas.config(image='')  # Remove the current image if any
+    output_canvas.config(image='')
     output_canvas.image = None
 
 
-def set_output(data, error):
+# Clear input
+def clear_input():
+    input_poly.delete('1.0', tk.END)
+
+
+def processing():
+    output_raw.insert(tk.END, "Processing...")
+
+
+def set_output(data, error: bool):
     clear_output()
+
     # Insert raw code
     raw_code = str(data)
     output_raw.insert(tk.END, raw_code)
@@ -65,60 +75,38 @@ def set_output(data, error):
             output_canvas.config(image=photo)
             output_canvas.image = photo
         else:
-            output_raw.insert(tk.END, "Error generating LaTeX image.")
+            output_raw.insert(tk.END, messages.error_generating_latex)
+
     except Exception as e:
-        output_raw.insert(tk.END, f"LaTeX rendering error:\n{e}")
+        output_raw.insert(tk.END, messages.error_generating_latex)
 
 
-# Clear input
-def clear_input():
-    input_poly.delete('1.0', tk.END)
-
-
-# def clear_output():
-#     output_raw.delete('1.0', tk.END)
-#     output_tex.delete('1.0', tk.END)
-#     output_canvas.config(image='')  # Remove the current image if any
-
-
-def processing():
-    output_raw.insert(tk.END, "Processing...")
-
-
-def handle_btn_click(func):
+def handle_btn_click(method):
     clear_output()
-    output_canvas.image = None
     processing()
 
     ipoly = get_input()
     ivars = get_variables()
 
+    start_time = time.time()
     try:
-        start_time = time.time()
-
-        numer, denom, error_message = parse_input_for_pqr(ipoly, ivars)
-        if error_message:
-            output_raw.delete('1.0', tk.END)
-            set_output(error_message, True)
-            time_label.config(text="⏱ Time (s): --")
+        numer, denom, error = parse_input_for_pqr(ipoly, ivars)
+        if error:
+            set_output(error, error=True)
             return
 
-        numer, denom, error_message = run_parallel_on_fraction(func, numer, denom)
-        if error_message:
-            output_raw.delete('1.0', tk.END)
-            set_output(error_message, True)
-            time_label.config(text="⏱ Time (s): --")
+        numer, denom, error = run_method_on_parallel(method, numer, denom)
+        if error:
+            set_output(error, error=True)
             return
 
-        res = simplify(numer.as_expr() / denom.as_expr())
-        output_raw.delete('1.0', tk.END)
-        set_output(res, False)
+        result = simplify(numer.as_expr() / denom.as_expr())
+        set_output(result, error=False)
 
-        elapsed_time = time.time() - start_time
-        time_label.config(text=f"⏱ Time (s): {elapsed_time:.2f}")
+        elapsed = time.time() - start_time
+        time_label.config(text=f"⏱ Time (s): {elapsed:.2f}")
     except Exception as e:
-        output_raw.delete('1.0', tk.END)
-        set_output(f"Error: {e}", True)
+        set_output(f"Error: {e}", error=True)
         time_label.config(text="⏱ Time (s): --")
 
 
@@ -197,9 +185,6 @@ icon_image = Image.open(icon_path)
 icon_photo = ImageTk.PhotoImage(icon_image)
 root.iconphoto(False, icon_photo)
 
-# Font size
-# custom_font = ('Consolas', 11)
-
 # Main container
 main_frame = ttk.Frame(root)
 main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
@@ -223,14 +208,13 @@ ttk.Label(var_label_frame, text="Variables:", font=('Consolas', 12, 'bold')).pac
 # Entry for Variables with placeholder
 input_vars = ttk.Entry(variables_frame, font=('Consolas', 11))
 input_vars.pack(fill=tk.X)
-input_vars.insert(0, 'a,b,c')  # Default placeholder text
+input_vars.insert(0, 'a,b,c')  # Default variables
 
-# Input: Polynomial
-ttk.Label(left_frame, text="Input:", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
+# Expression
+ttk.Label(left_frame, text="Expression / Polynomial:", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
 input_poly = scrolledtext.ScrolledText(left_frame, height=7, wrap=tk.WORD, font=('Consolas', 11), undo=True)
 input_poly.pack(fill=tk.BOTH, expand=False, pady=5)
-input_poly.insert(tk.END, random_input())
-# input_poly.insert(tk.END, 'a^3+b^3+c^3-3*a*b*c+a^2*b+a^2*c')  # Default placeholder text
+input_poly.insert(tk.END, random_input()) # Default input
 
 # Label for Output above the output sections
 ttk.Label(left_frame, text="Output:", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)

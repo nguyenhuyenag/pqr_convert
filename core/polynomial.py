@@ -1,7 +1,6 @@
 from itertools import combinations_with_replacement
 from typing import List, Union, Set, Tuple
 
-# import sympy as sp
 from sympy import Poly, Expr, S, Mul, Symbol, IndexedBase, symbols
 
 _coeff_index_ = 1
