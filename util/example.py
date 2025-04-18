@@ -1,7 +1,7 @@
 import random
 
 
-def random_input():
+def random_example():
     data = [
         '(a - b)^2*(b - c)^2*(c - a)^2',
         # 'a/(b + c^2) + b/(c + a^2) + c/(a + b^2) - 3/2',

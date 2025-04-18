@@ -27,19 +27,24 @@ if %errorlevel% neq 0 (
 :: Build the executable
 echo Building pqr_convert.exe...
 
+@echo off
+cd /d %~dp0
+
 python -m PyInstaller ^
     --name pqr_convert ^
     --windowed --onedir ^
-    --icon=../resources/icon.png ^
-    --add-data "../resources/icon.png;resources" ^
+    --icon=app/assets/icon.ico ^
+    --add-data "app/assets/icon.png;assets" ^
     --hidden-import=sympy ^
-	--hidden-import=sympy.printing ^
+    --hidden-import=sympy.printing ^
     --collect-all sympy ^
-	--collect-submodules PIL ^
-    --exclude-module matplotlib.tests --exclude-module matplotlib.tests.test_* ^
+    --collect-submodules PIL ^
     --exclude-module matplotlib.tests ^
+	--exclude-module matplotlib.tests.test_* ^
     --noconfirm --clean --noupx ^
-    main.py
+    app/ui_main.py
+
+
 
 :: Check error 
 if %errorlevel% equ 0 (

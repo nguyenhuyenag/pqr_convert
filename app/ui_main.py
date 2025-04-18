@@ -1,9 +1,7 @@
 import threading
 import time
 import tkinter as tk
-import webbrowser
 from tkinter import ttk, scrolledtext
-from urllib import parse
 
 from sympy import simplify, latex
 
@@ -11,12 +9,12 @@ from core.pqr import pqr
 from core.uvw import uvw
 from util import config, messages
 from util.config import TIME_DEFAULT
+from util.example import random_example
 from util.image_utils import latex_to_img, get_icon
 from util.multithreading import run_method_on_parallel
 from util.poly_utils import handle_factor, handle_expand, handle_discriminant, handle_collect
-from util.random import random_input
 from util.validation import parse_input_for_pqr
-from util.web_utils import open_author_link
+from util.web_utils import open_author_link, open_latex_svg_viewer
 
 COMMON_PADDING = 10
 
@@ -38,6 +36,10 @@ def get_variables():
 # Get data from the Input box
 def get_input():
     return input_poly.get(1.0, tk.END).strip() or ''
+
+
+def get_output_tex():
+    return output_tex.get(1.0, tk.END).strip() or ''
 
 
 def clear_output():
@@ -187,14 +189,14 @@ def build_button():
         btn.pack(pady=8, ipady=5)
 
 
-def open_latex_svg_viewer():
-    latex_code = output_tex.get("1.0", tk.END).strip()
-    if not latex_code:
-        return
-
-    encoded = parse.quote(latex_code)
-    url = f"https://latex.codecogs.com/svg.image?{encoded}"
-    webbrowser.open_new(url)
+# def open_latex_svg_viewer():
+#     latex_code = output_tex.get("1.0", tk.END).strip()
+#     if not latex_code:
+#         return
+#
+#     encoded = parse.quote(latex_code)
+#     url = f"https://latex.codecogs.com/svg.image?{encoded}"
+#     webbrowser.open_new(url)
 
 
 #############################################
@@ -205,7 +207,10 @@ root.title("PQR Convert")
 root.geometry(f"{WIDTH_FORM}x{HEIGHT_FORM}")
 
 # Set icon
+# icon = get_icon_path()
+# if icon:
 root.iconphoto(False, get_icon())
+# root.iconbitmap(get_icon_path())
 
 # Main container
 main_frame = ttk.Frame(root)
@@ -238,7 +243,7 @@ input_vars.insert(0, 'a,b,c')
 ttk.Label(left_frame, text="Expression / Polynomial:", font=LABEL_BOLD).pack(anchor=tk.W, pady=(2, 0), padx=5)
 input_poly = scrolledtext.ScrolledText(left_frame, height=HEIGHT_INPUT, wrap=tk.WORD, font=('Consolas', 11), undo=True)
 input_poly.pack(fill=tk.BOTH, expand=False, pady=(2, 0), padx=5)
-input_poly.insert(tk.END, random_input())  # Default input
+input_poly.insert(tk.END, random_example())  # Default input
 
 # Label for Output
 ttk.Label(left_frame, text="Output:", font=LABEL_BOLD).pack(anchor=tk.W, pady=5)
@@ -260,7 +265,7 @@ output_tex.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 view_label = tk.Label(left_frame, text="Open LaTeX preview", fg="blue", cursor="hand2", font=("Arial", 10, "underline"))
 view_label.pack(anchor=tk.W)
-view_label.bind("<Button-1>", lambda e: open_latex_svg_viewer())
+view_label.bind("<Button-1>", lambda e: open_latex_svg_viewer(get_output_tex()))
 
 # Output: LaTeX image
 output_canvas = tk.Label(left_frame, background="white")
@@ -308,7 +313,7 @@ author_label = ttk.Label(
 author_label.pack(side=tk.BOTTOM, fill=tk.X, pady=(5, COMMON_PADDING))
 
 # Bind click cho author_label
-author_label.bind("<Button-1>", open_author_link)
+author_label.bind("<Button-1>", lambda e: open_author_link())
 
 # Danh sách các widget cần Ctrl + A
 text_widgets = [input_poly, output_raw, output_tex]

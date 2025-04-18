@@ -7,10 +7,6 @@ from PIL import Image, ImageTk
 
 from util.config import WIDTH_OUTPUT_CANVAS
 
-# Project path
-def get_base_path():
-    return getattr(sys, "_MEIPASS", os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 
 def latex_to_img(latex_code):
     plt.rcParams.update({
@@ -33,6 +29,9 @@ def latex_to_img(latex_code):
 
 
 def get_icon():
-    icon_path = os.path.join(get_base_path(), 'resources', 'icon.png')
-    icon_image = Image.open(icon_path)
-    return ImageTk.PhotoImage(icon_image)
+    if hasattr(sys, "_MEIPASS"):
+        icon_path = os.path.join(sys._MEIPASS, "assets", "icon.png")
+    else:
+        icon_path = 'assets/icon.png'
+    img = Image.open(icon_path)
+    return ImageTk.PhotoImage(img)
