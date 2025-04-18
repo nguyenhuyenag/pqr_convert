@@ -18,11 +18,16 @@ from util.random import random_input
 from util.validation import parse_input_for_pqr
 from util.web_utils import open_author_link
 
+COMMON_PADDING = 10
+RAW_OUTPUT_HEIGHT = 5
+TEX_OUTPUT_HEIGHT = 3
+
+LABEL_BOLD = ('Consolas', 11, 'bold')
+
 if getattr(sys, 'frozen', False):
-    # For .exe
-    base_path = sys._MEIPASS
+    base_path = sys._MEIPASS  # For .exe
 else:
-    # For Python file
+    # For project
     base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 
@@ -63,9 +68,8 @@ def set_output(data, error: bool):
         return  # Nếu có lỗi thì không in kết quả của output_raw và output_tex
 
     try:
-        latex_code = latex(data)
-
         # Insert TeX code
+        latex_code = latex(data)
         output_tex.insert(tk.END, latex_code)
 
         # Render LaTeX image
@@ -197,38 +201,41 @@ left_frame.grid(row=0, column=0, sticky="nsew")
 main_frame.grid_columnconfigure(0, weight=3)
 main_frame.grid_rowconfigure(0, weight=1)
 
+# Frame label and input
 variables_frame = ttk.Frame(left_frame)
-variables_frame.pack(fill=tk.X, pady=(0, 10))
+variables_frame.pack(fill=tk.X, pady=(0, 2))  # Giảm khoảng cách phía dưới
+
+label_input_frame = ttk.Frame(variables_frame)
+label_input_frame.pack(fill=tk.X, padx=5, pady=2)  # Padding bên trái/phải
 
 # Label for variables
-var_label_frame = ttk.Frame(variables_frame)
-var_label_frame.pack(fill=tk.X)
-ttk.Label(var_label_frame, text="Variables:", font=('Consolas', 12, 'bold')).pack(side=tk.LEFT)
+ttk.Label(label_input_frame, text="Variables:", font=LABEL_BOLD).grid(row=0, column=0, sticky='w')
 
-# Entry for Variables with placeholder
-input_vars = ttk.Entry(variables_frame, font=('Consolas', 11))
-input_vars.pack(fill=tk.X)
-input_vars.insert(0, 'a,b,c')  # Default variables
+# Input for Variables
+input_vars = ttk.Entry(label_input_frame, font=('Consolas', 11), width=20)
+input_vars.grid(row=0, column=1, sticky='w', padx=(10, 0))
+input_vars.insert(0, 'a,b,c')
 
-# Expression
-ttk.Label(left_frame, text="Expression / Polynomial:", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
+# Input expression
+ttk.Label(left_frame, text="Expression / Polynomial:", font=LABEL_BOLD).pack(
+    anchor=tk.W, pady=(2, 0), padx=5)  # Thêm padx=5 để thẳng hàng với "Variables:"
 input_poly = scrolledtext.ScrolledText(left_frame, height=7, wrap=tk.WORD, font=('Consolas', 11), undo=True)
-input_poly.pack(fill=tk.BOTH, expand=False, pady=5)
-input_poly.insert(tk.END, random_input()) # Default input
+input_poly.pack(fill=tk.BOTH, expand=False, pady=(2, 0), padx=5)  # Cũng thêm padx cho đồng bộ
+input_poly.insert(tk.END, random_input())  # Default input
 
 # Label for Output above the output sections
-ttk.Label(left_frame, text="Output:", font=('Consolas', 12, 'bold')).pack(anchor=tk.W, pady=5)
+ttk.Label(left_frame, text="Output:", font=LABEL_BOLD).pack(anchor=tk.W, pady=5)
 
 # Output: Raw Python code
 ttk.Label(left_frame, text="Raw").pack(anchor=tk.W)
-output_raw = scrolledtext.ScrolledText(left_frame, height=3, wrap=tk.WORD,
+output_raw = scrolledtext.ScrolledText(left_frame, height=RAW_OUTPUT_HEIGHT, wrap=tk.WORD,
                                        font=('Consolas', 11))  # Use variable for height
 output_raw.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX code
 ttk.Label(left_frame, text="TeX").pack(anchor=tk.W)
-output_tex = scrolledtext.ScrolledText(left_frame, height=5, wrap=tk.WORD,
-                                       font=('Consolas', 11))  # Use variable for height
+output_tex = scrolledtext.ScrolledText(left_frame, height=TEX_OUTPUT_HEIGHT, wrap=tk.WORD,
+                                       font=('Consolas', 11))
 output_tex.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX image
@@ -249,9 +256,6 @@ right_frame = ttk.Frame(main_frame, width=500)
 right_frame.grid(row=0, column=2, sticky="ns")
 main_frame.grid_columnconfigure(2, weight=0)
 
-# Định nghĩa một biến chung để điều chỉnh khoảng cách
-common_padding = 20  # Khoảng cách chung giữa time_label và author_label
-
 # Version label placed above the buttons
 version_label = ttk.Label(
     right_frame,
@@ -260,14 +264,14 @@ version_label = ttk.Label(
     anchor='center',
     foreground="gray"
 )
-version_label.pack(fill=tk.X, pady=(5, common_padding))  # Đặt trên các button
+version_label.pack(fill=tk.X, pady=(5, COMMON_PADDING))  # Đặt trên các button
 
 # Add buttons
 build_button()
 
 # Time label
 time_label = ttk.Label(right_frame, text="⏱ Time (s): --", font=('Consolas', 10))
-time_label.pack(pady=(common_padding, 5))  # Sử dụng common_padding cho khoảng cách phía trên
+time_label.pack(pady=(COMMON_PADDING, 5))  # Sử dụng common_padding cho khoảng cách phía trên
 
 # Author label just above the time label
 author_label = ttk.Label(
@@ -278,7 +282,7 @@ author_label = ttk.Label(
     foreground="blue",
     cursor='hand2',
 )
-author_label.pack(side=tk.BOTTOM, fill=tk.X, pady=(5, common_padding))  # Đặt dưới cùng
+author_label.pack(side=tk.BOTTOM, fill=tk.X, pady=(5, COMMON_PADDING))  # Đặt dưới cùng
 author_label.bind("<Button-1>", open_author_link)
 
 #############################################
