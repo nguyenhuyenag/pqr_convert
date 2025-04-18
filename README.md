@@ -11,7 +11,7 @@
     + $f(u, v, w),$ với $3u = a + b + c, \ 3u^2 = ab + bc + ca, \ w^3 = abc.$
 - `factor`: Phân tích biểu thức thành các nhân tử.
 - `expand`: Khai triển biểu thức.
-- `[discriminant](https://en.wikipedia.org/wiki/Discriminant)`: Tính biệt thức của đa thức.
+- [`discriminant`](https://en.wikipedia.org/wiki/Discriminant): Tính biệt thức của đa thức.
     + Ví dụ: Biệt thức của $(x) = ax^2+bx+c$ là $\Delta_{x}=b^2 - 4ac.$
 - `collect`: Nhóm đa thức theo biến.
     + Ví dụ: $a^2 + b^2 + c^2 + ab + bc + ca$ sẽ được nhóm lại theo $a$ như sau: $a^2 + a(b + c) + b^2 + bc + c^2$.
