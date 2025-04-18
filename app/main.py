@@ -1,7 +1,9 @@
 import threading
 import time
 import tkinter as tk
+import webbrowser
 from tkinter import ttk, scrolledtext
+from urllib import parse
 
 from sympy import simplify, latex
 
@@ -20,7 +22,7 @@ COMMON_PADDING = 10
 
 HEIGHT_INPUT = 10
 HEIGHT_RAW_OUTPUT = 5
-HEIGHT_TEX_OUTPUT = 3
+HEIGHT_TEX_OUTPUT = 5
 
 WIDTH_FORM = 1300
 HEIGHT_FORM = 700
@@ -185,6 +187,16 @@ def build_button():
         btn.pack(pady=8, ipady=5)
 
 
+def open_latex_svg_viewer():
+    latex_code = output_tex.get("1.0", tk.END).strip()
+    if not latex_code:
+        return
+
+    encoded = parse.quote(latex_code)
+    url = f"https://latex.codecogs.com/svg.image?{encoded}"
+    webbrowser.open_new(url)
+
+
 #############################################
 # Create the main window
 #############################################
@@ -232,17 +244,25 @@ input_poly.insert(tk.END, random_input())  # Default input
 ttk.Label(left_frame, text="Output:", font=LABEL_BOLD).pack(anchor=tk.W, pady=5)
 
 # Output: Raw
-ttk.Label(left_frame, text="Raw").pack(anchor=tk.W)
+# ttk.Label(left_frame, text="Raw").pack(anchor=tk.W)
 output_raw = scrolledtext.ScrolledText(left_frame, height=HEIGHT_RAW_OUTPUT, wrap=tk.WORD, font=('Consolas', 11))
 output_raw.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: TEX
-ttk.Label(left_frame, text="TeX").pack(anchor=tk.W)
+# ttk.Label(left_frame, text="TeX").pack(anchor=tk.W)
 output_tex = scrolledtext.ScrolledText(left_frame, height=HEIGHT_TEX_OUTPUT, wrap=tk.WORD, font=('Consolas', 11))
 output_tex.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
 # Output: LaTeX
-ttk.Label(left_frame, text="LaTeX").pack(anchor=tk.W)
+# ttk.Label(left_frame, text="LaTeX").pack(anchor=tk.W)
+# output_canvas = tk.Label(left_frame, background="white")
+# output_canvas.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+view_label = tk.Label(left_frame, text="Open LaTeX preview", fg="blue", cursor="hand2", font=("Arial", 10, "underline"))
+view_label.pack(anchor=tk.W)
+view_label.bind("<Button-1>", lambda e: open_latex_svg_viewer())
+
+# Output: LaTeX image
 output_canvas = tk.Label(left_frame, background="white")
 output_canvas.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
