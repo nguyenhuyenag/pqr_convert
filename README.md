@@ -1,4 +1,4 @@
-# 🌍 README
+# PQR Convert
 
 Chọn ngôn ngữ | Choose your language:
 
