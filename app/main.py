@@ -1,3 +1,4 @@
+import threading
 import time
 import tkinter as tk
 from tkinter import ttk, scrolledtext
@@ -25,8 +26,6 @@ WIDTH_FORM = 1300
 HEIGHT_FORM = 700
 
 LABEL_BOLD = ('Consolas', 11, 'bold')
-
-button_refs = []
 
 
 # Get data from the Variables box
@@ -157,32 +156,11 @@ def btn_collect():
     set_output(error or result, bool(error))
 
 
-# Ctrl + A chỉ chọn phần từ đầu đến cuối phần có dữ liệu
+# Ctrl + A chỉ phần có dữ liệu
 def ctrl_a_select(event):
     event.widget.tag_remove("sel", "1.0", "end")
     event.widget.tag_add("sel", "1.0", "end-1c")
     return "break"
-
-
-def disable_all_buttons():
-    for btn in button_refs:
-        btn.config(state="disabled")
-
-
-def enable_all_buttons():
-    for btn in button_refs:
-        btn.config(state="normal")
-
-
-def wrap_command(original_command):
-    def wrapped():
-        disable_all_buttons()
-        try:
-            original_command()
-        finally:
-            enable_all_buttons()
-
-    return wrapped
 
 
 def build_button():
@@ -201,12 +179,10 @@ def build_button():
             right_frame,
             text=text,
             width=20,
-            # command=cmd,
-            command=wrap_command(cmd), # Disabling buttons while processing
+            command=lambda c=cmd: threading.Thread(target=c).start(),
             cursor="hand2"
         )
         btn.pack(pady=8, ipady=5)
-        button_refs.append(btn)
 
 
 #############################################

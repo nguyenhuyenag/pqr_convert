@@ -7,12 +7,9 @@ from PIL import Image, ImageTk
 
 from util.config import WIDTH_OUTPUT_CANVAS
 
-
+# Project path
 def get_base_path():
-    if getattr(sys, 'frozen', False):
-        return sys._MEIPASS  # For .exe
-    else:
-        return os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    return getattr(sys, "_MEIPASS", os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 
 def latex_to_img(latex_code):
