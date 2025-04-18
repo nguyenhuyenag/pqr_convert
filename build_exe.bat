@@ -51,6 +51,6 @@ if %errorlevel% equ 0 (
 )
 
 echo.
-:: echo Closing in 10 seconds...
+
 timeout /t 5 /nobreak
 exit /b
