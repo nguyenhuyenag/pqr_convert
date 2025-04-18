@@ -11,16 +11,16 @@ from sympy import simplify, latex
 from core.pqr import pqr
 from core.uvw import uvw
 from util import config, messages
+from util.random import random_input
 from util.latex_utils import latex_to_img
 from util.multithreading import run_method_on_parallel
 from util.poly_utils import handle_factor, handle_expand, handle_discriminant, handle_collect
-from util.random import random_input
 from util.validation import parse_input_for_pqr
 from util.web_utils import open_author_link
 
-COMMON_PADDING = 10
-RAW_OUTPUT_HEIGHT = 5
-TEX_OUTPUT_HEIGHT = 3
+COMMON_PADDING: int = 10
+RAW_OUTPUT_HEIGHT: int = 5
+TEX_OUTPUT_HEIGHT: int = 3
 
 LABEL_BOLD = ('Consolas', 11, 'bold')
 
@@ -89,12 +89,12 @@ def handle_btn_click(method):
     clear_output()
     processing()
 
-    ipoly = get_input()
-    ivars = get_variables()
+    # ipoly = get_input()
+    # ivars = get_variables()
 
     start_time = time.time()
     try:
-        numer, denom, error = parse_input_for_pqr(ipoly, ivars)
+        numer, denom, error = parse_input_for_pqr(get_input(), get_variables())
         if error:
             set_output(error, error=True)
             return
@@ -146,12 +146,12 @@ def btn_discriminant():
     set_output(error or result, bool(error))
 
 
-def btn_group_by():
+def btn_collect():
     clear_output()
     processing()
 
     result, error = handle_collect(get_input(), get_variables())
-    set_output(result if result else error, result is None)
+    set_output(error or result, bool(error))
 
 
 def build_button():
@@ -161,7 +161,7 @@ def build_button():
         ("expand", btn_expand),
         ("factor", btn_factor),
         ("discriminant", btn_discriminant),
-        ("collect ", btn_group_by),
+        ("collect ", btn_collect),
         ("clear input", clear_input)
     ]
 
@@ -203,10 +203,10 @@ main_frame.grid_rowconfigure(0, weight=1)
 
 # Frame label and input
 variables_frame = ttk.Frame(left_frame)
-variables_frame.pack(fill=tk.X, pady=(0, 2))  # Giảm khoảng cách phía dưới
+variables_frame.pack(fill=tk.X, pady=(0, 2))
 
 label_input_frame = ttk.Frame(variables_frame)
-label_input_frame.pack(fill=tk.X, padx=5, pady=2)  # Padding bên trái/phải
+label_input_frame.pack(fill=tk.X, padx=5, pady=2)
 
 # Label for variables
 ttk.Label(label_input_frame, text="Variables:", font=LABEL_BOLD).grid(row=0, column=0, sticky='w')
@@ -217,28 +217,25 @@ input_vars.grid(row=0, column=1, sticky='w', padx=(10, 0))
 input_vars.insert(0, 'a,b,c')
 
 # Input expression
-ttk.Label(left_frame, text="Expression / Polynomial:", font=LABEL_BOLD).pack(
-    anchor=tk.W, pady=(2, 0), padx=5)  # Thêm padx=5 để thẳng hàng với "Variables:"
+ttk.Label(left_frame, text="Expression / Polynomial:", font=LABEL_BOLD).pack(anchor=tk.W, pady=(2, 0), padx=5)
 input_poly = scrolledtext.ScrolledText(left_frame, height=7, wrap=tk.WORD, font=('Consolas', 11), undo=True)
-input_poly.pack(fill=tk.BOTH, expand=False, pady=(2, 0), padx=5)  # Cũng thêm padx cho đồng bộ
+input_poly.pack(fill=tk.BOTH, expand=False, pady=(2, 0), padx=5)
 input_poly.insert(tk.END, random_input())  # Default input
 
-# Label for Output above the output sections
+# Label for Output
 ttk.Label(left_frame, text="Output:", font=LABEL_BOLD).pack(anchor=tk.W, pady=5)
 
-# Output: Raw Python code
+# Output: Raw
 ttk.Label(left_frame, text="Raw").pack(anchor=tk.W)
-output_raw = scrolledtext.ScrolledText(left_frame, height=RAW_OUTPUT_HEIGHT, wrap=tk.WORD,
-                                       font=('Consolas', 11))  # Use variable for height
+output_raw = scrolledtext.ScrolledText(left_frame, height=RAW_OUTPUT_HEIGHT, wrap=tk.WORD, font=('Consolas', 11))
 output_raw.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
-# Output: LaTeX code
+# Output: TEX
 ttk.Label(left_frame, text="TeX").pack(anchor=tk.W)
-output_tex = scrolledtext.ScrolledText(left_frame, height=TEX_OUTPUT_HEIGHT, wrap=tk.WORD,
-                                       font=('Consolas', 11))
+output_tex = scrolledtext.ScrolledText(left_frame, height=TEX_OUTPUT_HEIGHT, wrap=tk.WORD, font=('Consolas', 11))
 output_tex.pack(fill=tk.BOTH, expand=False, pady=(0, 5))
 
-# Output: LaTeX image
+# Output: LaTeX
 ttk.Label(left_frame, text="LaTeX").pack(anchor=tk.W)
 output_canvas = tk.Label(left_frame, background="white")
 output_canvas.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
@@ -256,7 +253,7 @@ right_frame = ttk.Frame(main_frame, width=500)
 right_frame.grid(row=0, column=2, sticky="ns")
 main_frame.grid_columnconfigure(2, weight=0)
 
-# Version label placed above the buttons
+# Version label
 version_label = ttk.Label(
     right_frame,
     text=f"Build: {config.version}",
@@ -271,9 +268,9 @@ build_button()
 
 # Time label
 time_label = ttk.Label(right_frame, text="⏱ Time (s): --", font=('Consolas', 10))
-time_label.pack(pady=(COMMON_PADDING, 5))  # Sử dụng common_padding cho khoảng cách phía trên
+time_label.pack(pady=(COMMON_PADDING, 5))
 
-# Author label just above the time label
+# Author label
 author_label = ttk.Label(
     right_frame,
     text="@nguyenhuyenag",
@@ -282,7 +279,7 @@ author_label = ttk.Label(
     foreground="blue",
     cursor='hand2',
 )
-author_label.pack(side=tk.BOTTOM, fill=tk.X, pady=(5, COMMON_PADDING))  # Đặt dưới cùng
+author_label.pack(side=tk.BOTTOM, fill=tk.X, pady=(5, COMMON_PADDING))
 author_label.bind("<Button-1>", open_author_link)
 
 #############################################

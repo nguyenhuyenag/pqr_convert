@@ -11,5 +11,5 @@ def random_input():
         'a^2*(a - b)*(a - c) + b^2*(b - c)*(b - a) + c^2*(c - a)*(c - b)',
         '(a*b  + b*c + c*a) * (1/(a + b)^2 + 1/(b + c)^2 + 1/(c + a)^2) - 9/4'
     ]
-    # return data[1]
+    # return data[-1]
     return random.choice(data)
