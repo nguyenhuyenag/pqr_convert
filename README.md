@@ -30,17 +30,17 @@
 ## Giao diện
 
 - **pqr / uvw**
-<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/pqr.png'>
-<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/uvw.png'>
+<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/pqr.png'>
+<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/uvw.png'>
 
 - **Expand**
-<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/expand.png'>
+<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/expand.png'>
 
 - **Factor**
-<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/factor.png'>
+<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/factor.png'>
 
 - **Discriminant**
-<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/discriminant.png'>
+<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/discriminant.png'>
 
 - **Collect**
-<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/screenshots/collect.png'>
+<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/collect.png'>
