@@ -27,6 +27,9 @@
 - **Phép toán chia**: Được biểu thị bằng dấu `/`.  
   Ví dụ: Biểu thức $\frac{a^2 + b^2 + c^2}{abc}$ sẽ được nhập dưới dạng `(a^2 + b^2 + c^2) / (a*b*c)`.
 
+## Warning
+- Hiện tại chương trình bị 4 cảnh báo trên [VirusTotal](https://www.virustotal.com/gui/file/d44439e4a08e59fb7f0e0daf647db1bda5485c97e842382f47b13141d306cb17), tuy nhiên chương trình mã nguồn mở và không chứa mã độc.
+
 ## Giao diện
 
 - **pqr / uvw**
