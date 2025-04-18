@@ -4,11 +4,6 @@ from sympy import Poly
 from util import messages
 
 
-# def parse_vars(str_vars):
-#     variables = str_vars.split(",")
-#     variables = {v.strip() for v in variables if v.strip()}
-#     return {sp.symbols(v) for v in variables}
-
 def parse_vars(str_vars):
     return {sp.symbols(v.strip()) for v in str_vars.split(",") if v.strip()}
 

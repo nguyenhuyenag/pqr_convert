@@ -1,34 +1,34 @@
-import os
-import sys
 import threading
 import time
 import tkinter as tk
 from tkinter import ttk, scrolledtext
 
-from PIL import Image, ImageTk
 from sympy import simplify, latex
 
 from core.pqr import pqr
 from core.uvw import uvw
 from util import config, messages
-from util.random import random_input
-from util.latex_utils import latex_to_img
+from util.config import WIDTH_FORM, HEIGHT_FORM
+from util.image_utils import latex_to_img, get_icon
 from util.multithreading import run_method_on_parallel
 from util.poly_utils import handle_factor, handle_expand, handle_discriminant, handle_collect
+from util.random import random_input
 from util.validation import parse_input_for_pqr
 from util.web_utils import open_author_link
 
-COMMON_PADDING: int = 10
-RAW_OUTPUT_HEIGHT: int = 5
-TEX_OUTPUT_HEIGHT: int = 3
+COMMON_PADDING = 10
+RAW_OUTPUT_HEIGHT = 5
+TEX_OUTPUT_HEIGHT = 3
 
 LABEL_BOLD = ('Consolas', 11, 'bold')
 
-if getattr(sys, 'frozen', False):
-    base_path = sys._MEIPASS  # For .exe
-else:
-    # For project
-    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+# if getattr(sys, 'frozen', False):
+#     base_path = sys._MEIPASS  # For .exe
+# else:
+#     # For project
+#     base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+#     # print(base_path)
 
 
 # Get data from the Variables box
@@ -181,13 +181,10 @@ def build_button():
 #############################################
 root = tk.Tk()
 root.title("PQR Convert")
-root.geometry("1300x700")
+root.geometry(f"{WIDTH_FORM}x{HEIGHT_FORM}")
 
 # Set icon
-icon_path = os.path.join(base_path, 'resources', 'icon.png')
-icon_image = Image.open(icon_path)
-icon_photo = ImageTk.PhotoImage(icon_image)
-root.iconphoto(False, icon_photo)
+root.iconphoto(False, get_icon())
 
 # Main container
 main_frame = ttk.Frame(root)
@@ -256,12 +253,12 @@ main_frame.grid_columnconfigure(2, weight=0)
 # Version label
 version_label = ttk.Label(
     right_frame,
-    text=f"Build: {config.version}",
+    text=f"Version: {config.version}",
     font=('Consolas', 10),
     anchor='center',
     foreground="gray"
 )
-version_label.pack(fill=tk.X, pady=(5, COMMON_PADDING))  # Đặt trên các button
+version_label.pack(fill=tk.X, pady=(5, COMMON_PADDING))
 
 # Add buttons
 build_button()

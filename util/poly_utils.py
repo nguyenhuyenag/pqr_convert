@@ -43,8 +43,7 @@ def handle_discriminant(input_poly: str, input_vars: str):
         if not expr.is_polynomial():
             return None, messages.invalid_variables_for_discriminant
 
-        # Chỉ có thể tính discriminant cho đa thức Todo
-        poly = Poly(expr, _x);
+        poly = Poly(expr, _x)
         discriminant = poly.discriminant()
         return discriminant, None
     except Exception as e:
@@ -58,7 +57,7 @@ def handle_collect(input_poly: str, input_vars: str):
     try:
         pvars = parse_vars(input_vars)
         expr = sp.sympify(input_poly)
-        # Sort by degree Todo
+        # Todo: Nếu chỉ có 1 biến thì sort by degree ???
         grouped = collect(expand(expr), list(pvars))
         return grouped, None
     except Exception as e:
