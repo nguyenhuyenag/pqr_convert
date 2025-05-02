@@ -4,6 +4,8 @@
 [![Download PQR Convert](https://custom-icon-badges.demolab.com/badge/-Download-blue?style=for-the-badge&logo=download&logoColor=white "Download PQR Convert")](https://github.com/nguyenhuyenag/pqr_convert/releases/)
 <!-- END LATEST DOWNLOAD BUTTON -->
 
+- **Note:** There are two available versions: `pqr_convert.zip` and `pqr_convert.exe`. Both are identical, however `pqr_convert.exe` takes longer to start than `pqr_convert.zip`.
+
 ## Main Features
 
 - `pqr/uvw`: Convert expressions of the form $f(a, b, c)$ (symmetric, permutation) into:
