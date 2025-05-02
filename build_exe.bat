@@ -32,7 +32,7 @@ cd /d %~dp0
 
 python -m PyInstaller ^
     --name pqr_convert ^
-    --windowed --onedir ^
+    --windowed --onefile ^
     --icon=app/assets/icon.ico ^
     --add-data "app/assets/icon.png;assets" ^
     --hidden-import=sympy ^

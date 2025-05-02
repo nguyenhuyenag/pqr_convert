@@ -4,6 +4,8 @@
 [![Download PQR Convert](https://custom-icon-badges.demolab.com/badge/-Download-blue?style=for-the-badge&logo=download&logoColor=white "Tải về PQR Convert")](https://github.com/nguyenhuyenag/pqr_convert/releases/)
 <!-- END LATEST DOWNLOAD BUTTON -->
 
+- **Lưu ý:** Có hai phiên bản có thể sử dụng: `pqr_convert.zip` và `pqr_convert.exe`. Cả hai đều giống nhau, tuy nhiên `pqr_convert.exe` khởi động chậm hơn `pqr_convert.zip`.
+
 ## [English Version](README.en.md)
 
 ## Các tính năng chính
