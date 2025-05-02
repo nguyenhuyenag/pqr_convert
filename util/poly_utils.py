@@ -57,8 +57,9 @@ def handle_collect(input_poly: str, input_vars: str):
     try:
         pvars = parse_vars(input_vars)
         expr = sp.sympify(input_poly)
-        # Todo: Nếu chỉ có 1 biến thì sort by degree ???
-        grouped = collect(expand(expr), list(pvars))
-        return grouped, None
+        f = collect(expand(expr), list(pvars))
+        terms = f.as_ordered_terms()
+        result = sp.Add(*map(sp.factor, terms))
+        return result, None
     except Exception as e:
         return None, str(e)
