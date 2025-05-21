@@ -36,18 +36,21 @@
 
 ## Giao diện
 
-- **pqr / uvw**
+- **pqr / uvw:** Chuyển đổi đa thức ba biến về dạng pqr hoặc uvw.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/pqr.png'>
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/uvw.png'>
 
-- **Expand**
+- **Expand:** Khai triển đa thức.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/expand.png'>
 
-- **Factor**
+- **Factor:** Phân tích đa thức thành nhân tử.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/factor.png'>
 
-- **Discriminant**
+- **Discriminant:** Tính biệt thức của đa thức.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/discriminant.png'>
 
-- **Collect**
+- **Collect:** Nhóm đa thức theo biến.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/collect.png'>
+
+- **Subtitute:** Tính giá trị của biểu thức tại các giá trị của biến.
+<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/substitute.png'>
