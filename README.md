@@ -49,8 +49,8 @@
 - **Discriminant:** Chương trình cần xác định biến số của đa thức mới có thể tính được biệt thực. Ví dụ, với đa thức cần tính biệt thức là $f(x) = ax^2 + bx + c$, thì `Variables` là `x`.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/discriminant.png'>
 
-- **Collect:** Nhóm đa thức theo biến.
+- **Collect:** Ví dụ ta cần nhóm biểu thức theo biến $x.$
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/collect.png'>
 
-- **Subtitute:** Tính giá trị của biểu thức tại các giá trị của biến.
+- **Subtitute:** Ví dụ ta cần tính giá trị của $-4*p^3*r + p^2*q^2 + 18*p*q*r - 4*q^3 - 27*r^2$ với $p=a+b+c, \, q = ab+bc+ca, \, r = abc.$
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/substitute.png'>
