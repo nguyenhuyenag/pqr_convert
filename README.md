@@ -23,7 +23,6 @@
 
 ## Lưu ý quan trọng
 
-- **Biến số**: Giả sử biểu thức là $f(a,b,c)$ thì `Variables` là `a,b,c`.
 - **Phép toán nhân**: Được biểu thị bằng dấu `*`.  
   Ví dụ: Biểu thức $ab + bc + ca$ sẽ được nhập dưới dạng `a*b + b*c + c*a`.
 
@@ -33,11 +32,11 @@
   Ví dụ: Biểu thức $\frac{a^2 + b^2 + c^2}{abc}$ sẽ được nhập dưới dạng `(a^2 + b^2 + c^2) / (a*b*c)`.
 
 ## Warning
-- Hiện tại chương trình bị 4 cảnh báo trên [VirusTotal](https://www.virustotal.com/gui/file/d44439e4a08e59fb7f0e0daf647db1bda5485c97e842382f47b13141d306cb17), tuy nhiên chương trình mã nguồn mở và không chứa mã độc. Trust me bro.
+- Hiện tại chương trình bị 4 cảnh báo trên [VirusTotal](https://www.virustotal.com/gui/file/d44439e4a08e59fb7f0e0daf647db1bda5485c97e842382f47b13141d306cb17), tuy nhiên mã nguồn của chương hoàn toàn sạch và không chứa mã độc.
 
 ## Giao diện
 
-- **pqr / uvw:** Chuyển đổi đa thức ba biến về dạng pqr hoặc uvw.
+- **pqr / uvw:** Chương trình cần biết các biến số trong biểu thức để chuyển đổi sang dạng $f(p,q,r)$ hoặc $f(u,v,w)$. Ví dụ: Biểu thức $f(a,b,c)$ thì `Variables` là `a,b,c`.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/pqr.png'>
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/uvw.png'>
 
