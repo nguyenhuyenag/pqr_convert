@@ -46,7 +46,7 @@
 - **Factor:** Phân tích đa thức thành nhân tử.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/factor.png'>
 
-- **Discriminant:** Chương trình cần xác định biến số để tính biệt thức. Ví dụ, với đa thức $f(x) = ax^2 + bx + c$, thì `Variables` là `x`.
+- **Discriminant:** Ví dụ, với đa thức cần tính biệt thức là $f(x) = ax^2 + bx + c$, thì `Variables` là `x`.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/discriminant.png'>
 
 - **Collect:** Nhóm đa thức theo biến.
