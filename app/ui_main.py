@@ -168,8 +168,8 @@ def btn_substitute():
     set_output(error or result, bool(error))
 
 
-# Ctrl + A chỉ phần có dữ liệu
-def ctrl_a_select(event):
+# Ctrl + A chỉ tô những phần có dữ liệu
+def ctrlA_select(event):
     event.widget.tag_remove("sel", "1.0", "end")
     event.widget.tag_add("sel", "1.0", "end-1c")
     return "break"
@@ -306,8 +306,8 @@ text_widgets = [input_expr, input_vars, output_raw, output_tex]
 
 # Bind Ctrl + A cho tất cả widget trong danh sách
 for widget in text_widgets:
-    widget.bind("<Control-a>", ctrl_a_select)
-    widget.bind("<Control-A>", ctrl_a_select)
+    widget.bind("<Control-a>", ctrlA_select)
+    widget.bind("<Control-A>", ctrlA_select)
 
 #############################################
 # MAIN LOOP
