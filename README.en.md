@@ -39,14 +39,19 @@
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/pqr.png'>
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/uvw.png'>
 
-- **Expand**
+
+- **Expand:** Expand the expression.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/expand.png'>
 
-- **Factor**
+- **Factor:** Factor the expression.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/factor.png'>
 
-- **Discriminant**
+- **Discriminant:** The program needs to identify the variable of the polynomial before it can compute the discriminant. For example, if the polynomial is $f(x)=ax^2+bx+c,$ then `Variables` should be $x$.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/discriminant.png'>
 
-- **Collect**
+- **Collect:** For example, we need to group the expression by the variable $x.$
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/collect.png'>
+
+- **Subtitute:** For example, we need to evaluate the value of $-4p^3r + p^2q^2 + 18pqr - 4q^3 - 27r^2$ where $p=a+b+c, \, q = ab+bc+ca, \, r = abc.$
+<img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/substitute.png'>
+- 
