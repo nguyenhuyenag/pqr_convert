@@ -36,7 +36,7 @@
 
 ## Giao diện
 
-- **pqr / uvw:** Chương trình cần biết các biến số trong biểu thức để chuyển đổi sang dạng $f(p,q,r)$ hoặc $f(u,v,w)$. Ví dụ: Biểu thức $f(a,b,c)$ thì `Variables` là `a,b,c`.
+- **pqr / uvw:** Chương trình cần xác định $3$ biến số của biểu thức để có thể chuyển đổi. Ví dụ, biểu thức $f(a,b,c)$ thì `Variables` là `a,b,c`.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/pqr.png'>
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/uvw.png'>
 
