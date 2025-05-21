@@ -11,7 +11,7 @@
 - `pqr/uvw`: Convert expressions of the form $f(a, b, c)$ (symmetric, permutation) into:
     + $f(p, q, r),$ where $p = a + b + c, \ q = ab + bc + ca, \ r = abc.$
     + $f(u, v, w),$ where $3u = a + b + c, \ 3u^2 = ab + bc + ca, \ w^3 = abc.$
-- `Factor`: Factorize expressions into products.
+- `Factor`: Factorize expressions.
 - `Expand`: Expand algebraic expressions.
 - [`Discriminant`](https://en.wikipedia.org/wiki/Discriminant): Compute the discriminant of a polynomial.
     + Example: The discriminant of $(x) = ax^2+bx+c$ is $\Delta_{x}=b^2 - 4ac.$
