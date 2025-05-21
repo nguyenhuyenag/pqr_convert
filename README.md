@@ -40,17 +40,17 @@
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/pqr.png'>
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/uvw.png'>
 
-- **Expand:** Expand the expression.
+- **Expand:** Khai triển biểu thức.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/expand.png'>
 
-- **Factor:** Factor the expression.
+- **Factor:** Phân tích đa thức thành nhân tử.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/factor.png'>
 
-- **Discriminant:** The program needs to identify the variable of the polynomial before it can compute the discriminant. For example, if the polynomial is $f(x)=ax^2+bx+c,$ then `Variables` should be $x$.
+- **Discriminant:** Chương trình cần xác định biến số của đa thức mới có thể tính được biệt thực. Ví dụ, với đa thức cần tính biệt thức là $f(x) = ax^2 + bx + c$, thì `Variables` là `x`.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/discriminant.png'>
 
-- **Collect:** For example, we need to group the expression by the variable $x.$
+- **Collect:** Ví dụ ta cần nhóm biểu thức theo biến $x.$
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/collect.png'>
 
-- **Subtitute:** For example, we need to evaluate the value of $-4p^3r + p^2q^2 + 18pqr - 4q^3 - 27r^2$ where $p=a+b+c, \, q = ab+bc+ca, \, r = abc.$
+- **Subtitute:** Ví dụ ta cần tính giá trị của $-4p^3r + p^2q^2 + 18pqr - 4q^3 - 27r^2$ với $p=a+b+c, \, q = ab+bc+ca, \, r = abc.$
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/substitute.png'>
