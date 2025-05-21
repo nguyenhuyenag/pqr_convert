@@ -2,7 +2,7 @@ import sympy as sp
 from sympy import factor, expand, Poly, collect
 
 from util import messages
-from util.validation import parse_vars
+from util.validation import parse_vars, sympify_expression
 
 
 def handle_factor(input_poly: str):
@@ -60,6 +60,28 @@ def handle_collect(input_poly: str, input_vars: str):
         f = collect(expand(expr), list(pvars))
         terms = f.as_ordered_terms()
         result = sp.Add(*map(sp.factor, terms))
+        return result, None
+    except Exception as e:
+        return None, str(e)
+
+
+def handle_substitute(expr: str, vals: str):
+    if not expr or not vals:
+        return None, messages.missing_input
+
+    try:
+        expr = sympify_expression(expr)
+        assignments = dict()
+        for item in vals.split(','):
+            if '=' not in item:
+                continue
+
+            lhs, rhs = item.split('=')
+            lhs = sympify_expression(lhs.strip())
+            rhs = sympify_expression(rhs.strip())
+            assignments[lhs] = rhs
+
+        result = expr.subs(assignments)
         return result, None
     except Exception as e:
         return None, str(e)
