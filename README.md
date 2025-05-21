@@ -52,5 +52,5 @@
 - **Collect:** Ví dụ ta cần nhóm biểu thức theo biến $x.$
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/collect.png'>
 
-- **Subtitute:** Ví dụ ta cần tính giá trị của $-4*p^3*r + p^2*q^2 + 18*p*q*r - 4*q^3 - 27*r^2$ với $p=a+b+c, \, q = ab+bc+ca, \, r = abc.$
+- **Subtitute:** Ví dụ ta cần tính giá trị của $-4p^3r + p^2q^2 + 18pqr - 4q^3 - 27r^2$ với $p=a+b+c, \, q = ab+bc+ca, \, r = abc.$
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/substitute.png'>
