@@ -36,7 +36,7 @@
 
 ## Giao diện
 
-- **pqr / uvw:** Chương trình cần xác định $3$ biến số của biểu thức để có thể chuyển đổi. Ví dụ, biểu thức $f(a,b,c)$ thì `Variables` là `a,b,c`.
+- **pqr / uvw:** Chương trình cần xác định $3$ biến số của biểu thức mới thể chuyển đổi. Ví dụ, biểu thức cần chuyển đổi là $f(a,b,c)$ thì `Variables` là `a,b,c`.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/pqr.png'>
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/uvw.png'>
 
@@ -46,7 +46,7 @@
 - **Factor:** Phân tích đa thức thành nhân tử.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/factor.png'>
 
-- **Discriminant:** Ví dụ, với đa thức cần tính biệt thức là $f(x) = ax^2 + bx + c$, thì `Variables` là `x`.
+- **Discriminant:** Chương trình cần xác định biến số của đa thức mới có thể tính được biệt thực. Ví dụ, với đa thức cần tính biệt thức là $f(x) = ax^2 + bx + c$, thì `Variables` là `x`.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/discriminant.png'>
 
 - **Collect:** Nhóm đa thức theo biến.
