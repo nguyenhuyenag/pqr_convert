@@ -18,7 +18,6 @@
 - `Collect`: Group polynomial terms by variable.
     + Example: $a^2 + b^2 + c^2 + ab + bc + ca$ grouped by $a$ becomes: $a^2 + a(b + c) + b^2 + bc + c^2$.
 - `Substitute`: Evaluate the expression at given variable values
-  + Example: $a^2 + b^2 + c^2 + ab + bc + ca$ grouped by $a$ becomes: $a^2 + a(b + c) + b^2 + bc + c^2$.
 
 ## Important Notes
 
