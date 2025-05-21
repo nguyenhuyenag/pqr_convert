@@ -13,13 +13,13 @@
 - `pqr/uvw`: Chuyển đổi biểu thức $f(a, b, c)$ (đối xứng, hoán vị) sang:
     + $f(p, q, r),$ với $p = a + b + c, \ q = ab + bc + ca, \ r = abc.$
     + $f(u, v, w),$ với $3u = a + b + c, \ 3u^2 = ab + bc + ca, \ w^3 = abc.$
-- `factor`: Phân tích biểu thức thành các nhân tử.
-- `expand`: Khai triển biểu thức.
-- [`discriminant`](https://en.wikipedia.org/wiki/Discriminant): Tính biệt thức của đa thức.
+- `Factor`: Phân tích biểu thức thành các nhân tử.
+- `Expand`: Khai triển biểu thức.
+- [`Discriminant`](https://en.wikipedia.org/wiki/Discriminant): Tính biệt thức của đa thức.
     + Ví dụ: Biệt thức của $(x) = ax^2+bx+c$ là $\Delta_{x}=b^2 - 4ac.$
-- `collect`: Nhóm đa thức theo biến.
+- `Collect`: Nhóm đa thức theo biến.
     + Ví dụ: $a^2 + b^2 + c^2 + ab + bc + ca$ sẽ được nhóm lại theo $a$ như sau: $a^2 + a(b + c) + b^2 + bc + c^2$.
-- `substitute`: Tính giá trị biểu thức tại các giá trị của biến.
+- `Substitute`: Tính giá trị biểu thức tại các giá trị của biến.
 
 ## Lưu ý quan trọng
 
@@ -32,7 +32,7 @@
   Ví dụ: Biểu thức $\frac{a^2 + b^2 + c^2}{abc}$ sẽ được nhập dưới dạng `(a^2 + b^2 + c^2) / (a*b*c)`.
 
 ## Warning
-- Hiện tại chương trình bị 4 cảnh báo trên [VirusTotal](https://www.virustotal.com/gui/file/d44439e4a08e59fb7f0e0daf647db1bda5485c97e842382f47b13141d306cb17), tuy nhiên mã nguồn của chương hoàn toàn sạch và không chứa mã độc.
+- Hiện tại chương trình bị 4 cảnh báo trên [VirusTotal](https://www.virustotal.com/gui/file/d44439e4a08e59fb7f0e0daf647db1bda5485c97e842382f47b13141d306cb17), tuy nhiên mã nguồn của chương hoàn toàn sạch và an toàn.
 
 ## Giao diện
 
@@ -40,17 +40,17 @@
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/pqr.png'>
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/uvw.png'>
 
-- **Expand:** Khai triển đa thức.
+- **Expand:** Expand the expression.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/expand.png'>
 
-- **Factor:** Phân tích đa thức thành nhân tử.
+- **Factor:** Factor the expression.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/factor.png'>
 
-- **Discriminant:** Chương trình cần xác định biến số của đa thức mới có thể tính được biệt thực. Ví dụ, với đa thức cần tính biệt thức là $f(x) = ax^2 + bx + c$, thì `Variables` là `x`.
+- **Discriminant:** The program needs to identify the variable of the polynomial before it can compute the discriminant. For example, if the polynomial is $f(x)=ax^2+bx+c,$ then `Variables` should be $x$.
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/discriminant.png'>
 
-- **Collect:** Ví dụ ta cần nhóm biểu thức theo biến $x.$
+- **Collect:** For example, we need to group the expression by the variable $x.$
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/collect.png'>
 
-- **Subtitute:** Ví dụ ta cần tính giá trị của $-4p^3r + p^2q^2 + 18pqr - 4q^3 - 27r^2$ với $p=a+b+c, \, q = ab+bc+ca, \, r = abc.$
+- **Subtitute:** For example, we need to evaluate the value of $-4p^3r + p^2q^2 + 18pqr - 4q^3 - 27r^2$ where $p=a+b+c, \, q = ab+bc+ca, \, r = abc.$
 <img src='https://github.com/nguyenhuyenag/pqr_convert/blob/main/resources/substitute.png'>
