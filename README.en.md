@@ -29,7 +29,7 @@
 
 ## Warning
 
-- Currently, the program has 1 warnings on [VirusTotal](https://www.virustotal.com/gui/file/b69f82ab6054ceff9c54b5a23168dbb0a229cb3c72224b5c208db1bdfe23b79f?nocache=1), however, the source code of the program is completely clean and safe.
+- Currently, the program has 2 warnings on [VirusTotal](https://www.virustotal.com/gui/file/b69f82ab6054ceff9c54b5a23168dbb0a229cb3c72224b5c208db1bdfe23b79f?nocache=1), however, the source code of the program is completely clean and safe.
 
 ## Interface
 

@@ -30,7 +30,7 @@
   Ví dụ: Biểu thức $\frac{a^2 + b^2 + c^2}{abc}$ sẽ được nhập dưới dạng `(a^2 + b^2 + c^2) / (a*b*c)`.
 
 ## Warning
-- Hiện tại chương trình bị 1 cảnh báo trên [VirusTotal](https://www.virustotal.com/gui/file/b69f82ab6054ceff9c54b5a23168dbb0a229cb3c72224b5c208db1bdfe23b79f?nocache=1), tuy nhiên mã nguồn của chương hoàn toàn sạch và an toàn.
+- Hiện tại chương trình bị 2 cảnh báo trên [VirusTotal](https://www.virustotal.com/gui/file/b69f82ab6054ceff9c54b5a23168dbb0a229cb3c72224b5c208db1bdfe23b79f?nocache=1), tuy nhiên mã nguồn của chương hoàn toàn sạch và an toàn.
 
 ## Giao diện
 
