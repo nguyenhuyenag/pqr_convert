@@ -1,8 +1,6 @@
 # PQR Convert
 
-<!-- BEGIN LATEST DOWNLOAD BUTTON -->
 [![Download PQR Convert](https://custom-icon-badges.demolab.com/badge/-Download-blue?style=for-the-badge&logo=download&logoColor=white "Download PQR Convert")](https://github.com/nguyenhuyenag/pqr_convert/releases/)
-<!-- END LATEST DOWNLOAD BUTTON -->
 
 - **Note:** There are two available versions: `pqr_convert.zip` and `pqr_convert.exe`. Both are identical, however `pqr_convert.exe` takes longer to start than `pqr_convert.zip`.
 
@@ -31,7 +29,7 @@
 
 ## Warning
 
-- Currently, the program has 4 warnings on [VirusTotal](https://www.virustotal.com/gui/file/d44439e4a08e59fb7f0e0daf647db1bda5485c97e842382f47b13141d306cb17), however, the source code of the program is completely clean and safe.
+- Currently, the program has 1 warnings on [VirusTotal](https://www.virustotal.com/gui/file/b69f82ab6054ceff9c54b5a23168dbb0a229cb3c72224b5c208db1bdfe23b79f?nocache=1), however, the source code of the program is completely clean and safe.
 
 ## Interface
 
