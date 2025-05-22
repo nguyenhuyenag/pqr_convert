@@ -89,7 +89,7 @@ def set_output(data, error: bool):
         output_raw.insert(tk.END, messages.error_generating_latex)
 
 
-def handle_btn_click(method):
+def handle_btn_click_for_pqr_uvw(method):
     clear_output()
     processing()
 
@@ -116,11 +116,11 @@ def handle_btn_click(method):
 
 
 def btn_pqr():
-    handle_btn_click(pqr)
+    handle_btn_click_for_pqr_uvw(pqr)
 
 
 def btn_uvw():
-    handle_btn_click(uvw)
+    handle_btn_click_for_pqr_uvw(uvw)
 
 
 def btn_factor():
@@ -168,7 +168,7 @@ def btn_substitute():
     set_output(error or result, bool(error))
 
 
-# Ctrl + A chỉ tô những phần có dữ liệu
+# Ctrl + A chỉ chọn phần có dữ liệu
 def ctrlA_select(event):
     event.widget.tag_remove("sel", "1.0", "end")
     event.widget.tag_add("sel", "1.0", "end-1c")
@@ -179,11 +179,11 @@ def build_button():
     buttons = [
         ("pqr", btn_pqr),
         ("uvw", btn_uvw),
-        ("expand", btn_expand),
-        ("factor", btn_factor),
-        ("discriminant", btn_discriminant),
-        ("collect ", btn_collect),
         ("substitute ", btn_substitute),
+        ("discriminant", btn_discriminant),
+        ("factor", btn_factor),
+        ("expand", btn_expand),
+        ("collect ", btn_collect),
         ("clear input", clear_input)
     ]
 

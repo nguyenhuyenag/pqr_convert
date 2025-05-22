@@ -30,7 +30,7 @@ def parse_input_for_pqr(input_poly: str, input_vars: str):
         if len(pvars) != 3:
             return None, None, messages.invalid_variables_pqr_uvw
 
-        expr = sympify_expression(input_poly)
+        expr = sp.sympify(input_poly)
         factor = sp.together(expr)
         numer, denom = factor.as_numer_denom()
         return Poly(numer, *pvars), Poly(denom, *pvars), None
