@@ -71,7 +71,7 @@ def handle_substitute(expr: str, vals: str):
         expr = sp.sympify(expr)
         for item in vals.split(','):
             item = item.strip()
-            if '=' not in item or not item:
+            if not item or '=' not in item:
                 continue
 
             lhs, rhs = item.split('=', 1)
