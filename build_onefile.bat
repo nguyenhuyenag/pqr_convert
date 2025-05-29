@@ -1,4 +1,5 @@
 @echo off
+:: Trỏ đến thư mục app
 cd /d "%~dp0app"
 
 :: Check if Python is installed

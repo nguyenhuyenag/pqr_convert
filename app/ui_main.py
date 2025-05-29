@@ -70,7 +70,7 @@ def set_output(data, error: bool):
     output_raw.insert(tk.END, str(data))
 
     if error:
-        return  # Nếu có lỗi thì không in kết quả của output_raw và output_tex
+        return  # Nếu có lỗi thì in lỗi ở ô raw, không cần xử lý tiếp
 
     try:
         # Insert TeX code

@@ -34,7 +34,7 @@ def monomials(variables: Union[List[str], List[Symbol]], degree: int, is_homogen
     return list(result)
 
 
-def generate_polynomial(monomial_list: List[Expr], coeff_name: str = 'm') -> Tuple[Poly, List[Symbol]]:
+def generate_polynomial(monomial_list: List[Expr], coeff_name: str = 'm') -> Poly:
     """
         Generate a symbolic polynomial with indexed coefficients from a list of monomials.
 
