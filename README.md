@@ -2,13 +2,13 @@
 
 [![Download PQR Convert](https://custom-icon-badges.demolab.com/badge/-Download-blue?style=for-the-badge&logo=download&logoColor=white "Tải về PQR Convert")](https://github.com/nguyenhuyenag/pqr_convert/releases/)
 
-- **Lưu ý:** Có hai phiên bản có thể sử dụng: `pqr_convert.zip` và `pqr_convert.exe`. Cả hai đều giống nhau, tuy nhiên `pqr_convert.exe` khởi động chậm hơn `pqr_convert.zip`.
+- **Lưu ý:** Hiện có hai phiên bản: `pqr_convert.zip` và `pqr_convert.exe`. Cả hai có chức năng tương tự, tuy nhiên `pqr_convert.exe` khởi động chậm hơn.
 
 ## [English Version](README.en.md)
 
 ## Các tính năng chính
 
-- `pqr/uvw`: Chuyển đổi biểu thức $f(a, b, c)$ (đối xứng, hoán vị) sang:
+- `pqr/uvw`: Chuyển đổi biểu thức $f(a, b, c)$ (đối xứng, hoán vị) về dạng:
     + $f(p, q, r),$ với $p = a + b + c, \ q = ab + bc + ca, \ r = abc.$
     + $f(u, v, w),$ với $3u = a + b + c, \ 3u^2 = ab + bc + ca, \ w^3 = abc.$
 - `Factor`: Phân tích biểu thức thành các nhân tử.
@@ -17,7 +17,7 @@
     + Ví dụ: Biệt thức của $f(x) = ax^2+bx+c$ là $\Delta_{x}=b^2 - 4ac.$
 - `Collect`: Nhóm đa thức theo biến.
     + Ví dụ: $a^2 + b^2 + c^2 + ab + bc + ca$ sẽ được nhóm lại theo $a$ như sau: $a^2 + a(b + c) + b^2 + bc + c^2$.
-- `Substitute`: Tính giá trị biểu thức tại các giá trị của biến.
+- `Substitute`: Tính giá trị biểu thức.
 
 ## Lưu ý quan trọng
 
