@@ -2,7 +2,7 @@
 
 [![Download PQR Convert](https://custom-icon-badges.demolab.com/badge/-Download-blue?style=for-the-badge&logo=download&logoColor=white "Download PQR Convert")](https://github.com/nguyenhuyenag/pqr_convert/releases/)
 
-- **Note:** There are two available versions: `pqr_convert.zip` and `pqr_convert.exe`. Both are identical, however `pqr_convert.exe` takes longer to start than `pqr_convert.zip`.
+- **Note:** There are two available versions: `pqr_convert.zip` and `pqr_convert.exe`. They are the same, however, `pqr_convert.exe` takes longer to start.
 
 ## Main Features
 
@@ -10,12 +10,12 @@
     + $f(p, q, r),$ where $p = a + b + c, \ q = ab + bc + ca, \ r = abc.$
     + $f(u, v, w),$ where $3u = a + b + c, \ 3u^2 = ab + bc + ca, \ w^3 = abc.$
 - `Factor`: Factorize expressions.
-- `Expand`: Expand algebraic expressions.
+- `Expand`: Expand expressions.
 - [`Discriminant`](https://en.wikipedia.org/wiki/Discriminant): Compute the discriminant of a polynomial.
-    + Example: The discriminant of $(x) = ax^2+bx+c$ is $\Delta_{x}=b^2 - 4ac.$
+    + Example: The discriminant of $f(x) = ax^2+bx+c$ is $\Delta_{x}=b^2 - 4ac.$
 - `Collect`: Group polynomial terms by variable.
     + Example: $a^2 + b^2 + c^2 + ab + bc + ca$ grouped by $a$ becomes: $a^2 + a(b + c) + b^2 + bc + c^2$.
-- `Substitute`: Evaluate the expression at given variable values
+- `Substitute`: Evaluate the expression at given variable values.
 
 ## Important Notes
 
@@ -29,7 +29,7 @@
 
 ## Warning
 
-- Currently, the program has 2 warnings on [VirusTotal](https://www.virustotal.com/gui/file/b69f82ab6054ceff9c54b5a23168dbb0a229cb3c72224b5c208db1bdfe23b79f?nocache=1), however, the source code of the program is completely clean and safe.
+- Currently, the program has 2 warnings on [VirusTotal](https://www.virustotal.com/gui/file/b69f82ab6054ceff9c54b5a23168dbb0a229cb3c72224b5c208db1bdfe23b79f?nocache=1), however its source code is completely clean and safe.
 
 ## Interface
 
