@@ -62,5 +62,7 @@ def generate_polynomial(monomial_list: List[Expr], coeff_name: str = 'm') -> Pol
 
 
 def poly_zero(poly: Poly) -> Set[Expr]:
-    """Extract the set of constant terms (coefficients) from a sympy polynomial."""
+    """
+        Extract the set of constant terms (coefficients) from a sympy polynomial.
+    """
     return set(poly.as_dict().values())
